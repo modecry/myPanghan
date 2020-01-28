@@ -1,0 +1,17 @@
+.catbtn {
+  display: inline;
+  padding: 5px 10px 5px 10px;
+  border-radius: 30px;
+  font-weight: 500;
+  color: #327d9a;
+  margin-right: 3px;
+  border: 1px solid #327d9a;
+  cursor: pointer;
+}
+.catbtn.active {
+  background-color: #327d9a;
+  color: #ffffff;
+}
+.catbtn.filter {
+  background-color: #bb9842;
+}
