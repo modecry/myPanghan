@@ -8,5 +8,6 @@ const SCHEME = {
     instagram: "gsx$telegram",
     facebook: "gsx$facebook",
     service: "gsx$service",
-    description: "gsx$description"
+    description: "gsx$description",
+    category: "gsx$category"
 };

@@ -2,18 +2,32 @@
  *  Класс для формирования категорий
  */
 class Categories {
-    constructor(categoriesList, root) {
+    constructor(categoriesList, root, {methods,state}) {
         this.categoriesList = categoriesList;
         this.nodeListCategories = null;
         this.root = root;
+        this.parentMethods = methods;
+        this.parentState = state;
     }
+
     // метод обработки клика по элементу
     toggle(category) {
-        const {viewCategories:nodeList} = this;
+        const {viewCategories:nodeList,parentMethods:{setFilters}} = this;
         const dataAttribute = "name";
         const currentAttr = category.getAttribute(dataAttribute);
 
-        return toggleAcive({nodeList:this.nodeListCategories, currentAttr, dataAttribute},"active");
+        // колл бэк для работы с категориями
+        // TODO:  доработать коллббэк для категорий
+        const callbackCategories = ()=>{
+            const {search} = this.parentState.filters;
+            if(category.classList.value.includes("active")){
+                setFilters("",search);
+            }else{
+                setFilters("","Насfdsfdsfds");
+            }
+        }
+
+        return toggleAcive({nodeList:this.nodeListCategories, currentAttr, dataAttribute},"active", callbackCategories);
     }
 
     renderCategory = ({name:text,attr})=>{

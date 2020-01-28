@@ -6,7 +6,7 @@
  * @param selector - селектор для метода toggle
  * @returns {Function}  - возвращаемая функция для работы с конкретном элементе
  */
-function toggleAcive({nodeList, currentAttr, dataAttribute}, selector) {
+function toggleAcive({nodeList, currentAttr, dataAttribute}, selector, callback) {
     return function() {
         nodeList.forEach(element => {
             const iterableAttr = element.getAttribute(dataAttribute);
@@ -14,6 +14,7 @@ function toggleAcive({nodeList, currentAttr, dataAttribute}, selector) {
                 element.classList.remove(selector);
             }
         });
+        callback && callback();
         this.classList.toggle(selector);
     };
 }

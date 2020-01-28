@@ -56,7 +56,7 @@ const dataFormater = obj => {
                     .replace(/(\?.*)/, "")
                     .toLowerCase();
                 value = value.match(/([a-z_.0-9]+)/g);
-                value = value[value.length - 1];
+                value = value&&value[value.length - 1];
                 break;
 
             // проверка для ватссапа
