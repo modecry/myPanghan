@@ -1,7 +1,17 @@
 /*
- *  Cхема требуемых данных
+* Массив категорий
+* */
+const CategoriesList = [
+    {
+        name: "Разное",
+        attr: "any"
+    }
+];
+
+/*
+ *  Cхема требуемых данных для рендера
  */
-const SCHEME = {
+const SERVICE_SCHEME = {
     name: "gsx$name",
     whatsapp: "gsx$whatsapp",
     telegram: "gsx$telegram",

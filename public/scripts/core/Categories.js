@@ -2,62 +2,83 @@
  *  Класс для формирования категорий
  */
 class Categories {
-    constructor(categoriesList, root, {methods,state}) {
-        this.categoriesList = categoriesList;
-        this.nodeListCategories = null;
-        this.root = root;
-        this.parentMethods = methods;
-        this.parentState = state;
+    constructor(categoriesList, root, {methods, state}) {
+        this.categoriesList = categoriesList;  // массив категорий
+        this.nodeListCategories = null;  // лист node  объектов
+        this.root = root; // корневой root элемент
+        this.parentMethods = methods; // родительские методы
+        this.parentState = state; // родительский стейт
     }
 
-    // метод обработки клика по элементу
+    /**
+     *  Замыкающий метод для обработки нажатия по категории
+     * @param category - node экземпляр для навешивания
+     * @returns {Function}
+     */
     toggle(category) {
-        const {viewCategories:nodeList,parentMethods:{setFilters}} = this;
-        const dataAttribute = "name";
-        const currentAttr = category.getAttribute(dataAttribute);
+        const {
+            viewCategories: nodeList, // node list  категорий
+            parentMethods: {setFilters} // метод установки фильтров
+        } = this;
 
-        // колл бэк для работы с категориями
-        // TODO:  доработать коллббэк для категорий
-        const callbackCategories = ()=>{
+        const attributeName = "name"; // требуемый атрибут для установки класса active
+        const currentAttr = category.getAttribute(attributeName); // атрибут конкретной ноды
+        const categoryName = category.innerText; // получаем нейминг категории
+
+        /**
+         * Коллбэк пробрасываемый в метод toggle
+         */
+        const callbackCategories = () => {
             const {search} = this.parentState.filters;
-            if(category.classList.value.includes("active")){
-                setFilters("",search);
-            }else{
-                setFilters("","Насfdsfdsfds");
+            if (category.classList.value.includes("active")) {
+                setFilters("", search); // отчитска фильтра по категорям
+            } else {
+                setFilters(categoryName, search); // установка фильтра по категорям
             }
         }
 
-        return toggleAcive({nodeList:this.nodeListCategories, currentAttr, dataAttribute},"active", callbackCategories);
+        return toggleAcive({
+            nodeList: this.nodeListCategories,
+            currentAttr,
+            attributeName
+        }, "active", callbackCategories);
     }
 
-    renderCategory = ({name:text,attr})=>{
+    /**
+     *  Рендер ноды категории
+     * @param text - описание
+     * @param attr - [name] атрибут ноды
+     * @returns {string} - Строка с нодой
+     */
+    renderCategory = ({name: text, attr}) => {
         return `<div class="catbtn" name="${attr}">${text}</div>`;
     };
 
-    renderCategories = ()=>{
+    /**
+     *  Рендер категорий
+     */
+    renderCategories = () => {
         const {root, renderCategory} = this;
-        // создание категорий
-        const categories = this.categoriesList.map(category=>{
-            return renderCategory(category);
-        });
+        const categories = this.categoriesList.map(category => renderCategory(category)); // мапим категории
 
         // непосредственный рендер категорий в контейнер
         root.innerHTML = `
             ${root.innerHTML}
             <div id="mycategories" class="t-rec_pt_0 t-rec_pb_30 t-container">
-                ${categories}
+                ${categories.join("")}
             </div>
-        `.replace(",","");
+        `;
 
-        this.nodeListCategories = document.querySelectorAll(".catbtn");
-    }
-
-    // Иницилазация категорий
-    init = () => {
-         this.renderCategories();
-        // Навешивание обработчиков по клику
+        this.nodeListCategories = document.querySelectorAll(".catbtn"); // определяем  лист node
         this.nodeListCategories.forEach(category =>
             category.addEventListener("click", this.toggle(category))
-        );
+        ); // навешиваем обработчик на каждую ноду
+    }
+
+    /**
+     * Иницилизация категорий
+     */
+    init = () => {
+        this.renderCategories();
     };
 }
