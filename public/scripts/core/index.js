@@ -1,65 +1,70 @@
-const CategoriesList = [
-    {
-        name:"Все",
-        attr:"f-all"
-    },
-    {
-        name:"Разное",
-        attr:"cbspeaker"
-    }
-]
-
+/**
+ *  Основной класс релизующий общую логику и управляющий  отдельными частями модуля
+ */
 class StructuredContent {
-    constructor(contentParams,selector){
-        this.contentParams = contentParams;
+    constructor(contentConfig, selector) {
+        this.contentConfig = contentConfig; // основная конфигурация
         this.contentState = {
-            filters:{
+            filters: {
                 search: "",
-                category:""
+                category: ""
             },
             data: []
-        }
-        this.root = document.querySelector(selector);
+        } // базовый стейт
+        this.root = document.querySelector(selector); // root  компонент в который будет рендерится контент
     }
 
-    // установка фильтров и поисков
-    setFilters = (currentCategory,currentSearch)=>{
-        const {filters} = this.contentState;
-        const search = currentSearch;
-        const category = currentCategory;
+    /**
+     * Метод установки фильтров и поиска
+     * @param category - требуемая категория
+     * @param search - строка с поиском
+     */
+    setFilters = (category, search) => {
         // устанавливаем фильтры
-        this.contentState.filters = {search,category};
-        this.blockContentInstance.reRender();
+        this.contentState.filters = {search, category};
+        this.blockContentInstance.renderBlocksContent(); // вызываем ререндер у блока с контентом
     }
 
-    // запрос на получение данных
-    getIntitalData = async ()=> {
-        const {url,scheme} = this.contentParams;
-        const data = await getData(url);
-        this.contentState.data = constructData(data.feed.entry,scheme);
+    /**
+     * Запрос на получение данных
+     * @returns {Promise<void>}
+     */
+    getIntitalData = async () => {
+        const {url, scheme} = this.contentConfig;
+        const {feed} = await getData(url);
+        // Конструируем нужный формат данных на основе схемы
+        this.contentState.data = constructData(feed.entry, scheme);
     }
 
-    // рендеринг элементов
-    render = ()=>{
-        const {categoriesInstance,blockContentInstance} = this;
+    /**
+     *  Метод рендеринга вызывает иницилизвцию вложенных инстансов
+     */
+    render = () => {
+        const {categoriesInstance, blockContentInstance} = this;
         categoriesInstance.init();
         blockContentInstance.init();
     }
 
-    // иницилизация модуля
-    init = async () =>{
-        await this.getIntitalData();
+    /**
+     *  Асинзронная иницилизация
+     * @returns {Promise<void>}
+     */
+    init = async () => {
+        await this.getIntitalData(); // установка исходных данных
 
-        const {root,setFilters,contentParams:{scheme}} = this;
-        const contentFields = Object.keys(scheme);
+        const {root, setFilters, contentConfig: {scheme}} = this;
+        const contentFields = Object.keys(scheme); // наейминги для полей
         const parentParametrs = {
             methods: {setFilters},
             state: this.contentState,
             contentFields
-        }
-        this.categoriesInstance  = new Categories(CategoriesList,root,parentParametrs);
-        this.blockContentInstance = new BlockContent(root,parentParametrs);
+        } // параметры родителя для проброса в дочерние инстансы
 
+        // создание инстансов дочерних компонентов
+        this.categoriesInstance = new Categories(CategoriesList, root, parentParametrs);
+        this.blockContentInstance = new BlockContent(root, parentParametrs);
+
+        // непосредственный рендеринг
         this.render();
     }
 }

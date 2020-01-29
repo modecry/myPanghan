@@ -4,15 +4,15 @@
  * @param data
  * @returns {Promise<any>}
  */
-async function  getData(url = "")  {
+async function getData(url = "") {
     try {
-        return  await fetch(url, {
+        return await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }).then(response => response.json());
-    }catch(e){
+    } catch (e) {
         console.log(`REQUEST ERROR!!!: ${e}`);
         return null;
     }
@@ -45,38 +45,46 @@ const dataFormater = obj => {
     Object.keys(obj).forEach(key => {
         let value = obj[key];
         switch (key) {
-            // проверка для фейсбука
+            // форматирование для фейсбука
             case "facebook":
                 value.includes("http://") && value.replace("http", "https");
                 break;
-            // проверка для инстаграма
+
+            // форматирование для инстаграма
             case "instagram":
                 value = value
                     .trim()
                     .replace(/(\?.*)/, "")
                     .toLowerCase();
                 value = value.match(/([a-z_.0-9]+)/g);
-                value = value&&value[value.length - 1];
+                value = value && value[value.length - 1];
                 break;
 
-            // проверка для ватссапа
+            // форматирование для ватссапа
             case "whatsapp":
                 value = value = value.replace(/[^0-9]/gi, "");
                 value = value[0] == "8" ? `7 ${value.substring(1)}` : value;
                 break;
 
-            // проверка для телеграмма
+            // форматирование для телеграмма
             case "telegram":
-                value = value
-                    .trim()
-                    .replace(/(\?.*)/, "")
-                    .toLowerCase();
-                value = value = value.replace(/^(\+?\d+)/g, "");
+                value = value.trim().replace(/(\?.*)/, '').toLowerCase();
+                value = value.replace(/^(\+?\d+)/g, '');
                 value = value.match(/([a-z_][a-z_.0-9]+)/g);
-                value = value && value[length - 1];
+                value = value && value[value.length - 1];
                 break;
         }
         newObj[key] = value;
     });
     return newObj;
 };
+
+/**
+ * Функция рендера шаблона
+ * @param content - передаваемое значение
+ * @param template - шаблон
+ * @returns {string} - строка с нодой шаблона
+ */
+function renderTemplate(content, template) {
+    return content ? template : "";
+}
