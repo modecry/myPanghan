@@ -23,17 +23,17 @@ class Categories {
 
         const attributeName = "name"; // требуемый атрибут для установки класса active
         const currentAttr = category.getAttribute(attributeName); // атрибут конкретной ноды
+        const categoryName = category.innerText; // получаем нейминг категории
 
         /**
          * Коллбэк пробрасываемый в метод toggle
-         * TODO:  доработать коллббэк для категорий
          */
         const callbackCategories = () => {
             const {search} = this.parentState.filters;
             if (category.classList.value.includes("active")) {
                 setFilters("", search); // отчитска фильтра по категорям
             } else {
-                setFilters("", search); // установка фильтра по категорям
+                setFilters(categoryName, search); // установка фильтра по категорям
             }
         }
 
@@ -65,9 +65,9 @@ class Categories {
         root.innerHTML = `
             ${root.innerHTML}
             <div id="mycategories" class="t-rec_pt_0 t-rec_pb_30 t-container">
-                ${categories}
+                ${categories.join("")}
             </div>
-        `.replace(",", ""); // реплейсим заптую подбрасываемую из массива
+        `;
 
         this.nodeListCategories = document.querySelectorAll(".catbtn"); // определяем  лист node
         this.nodeListCategories.forEach(category =>

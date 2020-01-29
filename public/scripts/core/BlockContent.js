@@ -13,16 +13,18 @@ class BlockContent {
      *  Метод применения фильтров и поиска
      */
     applyFilters = () => {
-        const {category, search} = this.parentState.filters;
+        const {category, search,} = this.parentState.filters;
         // проверка на существование фильтров || поиска
         if (category || search) {
-            const data = [];
-            this.data = this.data.filter((element) => {
+            this.data = [...this.parentState.data].filter((element) => {
                 let matches = 0;
+                element["category"].toLowerCase() === category.toLowerCase() && matches++;
                 this.contentFields.forEach(field => {
-                    // TODO: доработать фильтры
+                     if( search && element[field]) {
+                         element[field].includes(search) && matches++;
+                     }
                 });
-                return Boolean(matches);
+                return Boolean(matches); // филтр по кол-ву совпадений
             })
         } else {
             this.data = this.parentState.data;
@@ -122,7 +124,7 @@ class BlockContent {
         const hasBlockContainer = document.querySelector(".blocks");
         const blocksContainer = document.createElement("div");
         blocksContainer.classList.add("blocks");
-        blocksContainer.innerHTML = services;
+        blocksContainer.innerHTML = services.join("");
         // проверка на существование блока
         if (hasBlockContainer) {
             root.replaceChild(blocksContainer, hasBlockContainer);
@@ -135,7 +137,7 @@ class BlockContent {
      * Ре-рендер блоков
      * @returns {Promise<void>}
      */
-    reRenderBlocks = async () =>{
+    reRenderBlocks = async () => {
         await this.applyFilters();
         this.renderBlocksContent();
     }

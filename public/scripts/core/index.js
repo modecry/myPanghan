@@ -22,7 +22,7 @@ class StructuredContent {
     setFilters = (category, search) => {
         // устанавливаем фильтры
         this.contentState.filters = {search, category};
-        this.blockContentInstance.renderBlocksContent(); // вызываем ререндер у блока с контентом
+        this.blockContentInstance.reRenderBlocks(); // вызываем ререндер у блока с контентом
     }
 
     /**
