@@ -2,14 +2,30 @@
   "name": "mypanghan",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "old/index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "build": "cross-env NODE_ENV=production webpack   --mode=production --config ./src/webpack.config.js"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devdependencies": {
     "express": "^4.17.1",
     "nodemon": "^2.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^7.0.0",
+    "file-loader": "^5.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   }
 }
