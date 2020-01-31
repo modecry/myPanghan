@@ -4,7 +4,8 @@
   "description": "",
   "main": "old/index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack   --mode=production --config ./src/webpack.config.js"
+    "build": "cross-env NODE_ENV=production webpack   --mode=production --config ./src/webpack.config.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./src/webpack.config.js"
   },
   "author": "",
   "license": "ISC",

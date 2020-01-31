@@ -1,1 +1,3 @@
-console.log(1);
+const body = document.querySelector("body");
+
+console.log(body);

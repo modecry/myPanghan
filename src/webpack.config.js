@@ -80,8 +80,7 @@ const productionConfig = {
 
 const devConfig = {
     devServer: {
-        contentBase:"./build",
-        compress: true,
+        contentBase:path.resolve("./dist"),
         port: 9000,
         overlay: true
     },
