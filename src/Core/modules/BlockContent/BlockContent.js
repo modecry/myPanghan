@@ -1,3 +1,6 @@
+// services
+import {renderTemplate} from "services";
+
 /**
  *  Класс реализущий вывод основных блоков с контентом на основе данных
  */
@@ -20,9 +23,9 @@ class BlockContent {
                 let matches = 0;
                 element["category"].toLowerCase() === category.toLowerCase() && matches++;
                 this.contentFields.forEach(field => {
-                     if( search && element[field]) {
-                         element[field].includes(search) && matches++;
-                     }
+                    if (search && element[field]) {
+                        element[field].includes(search) && matches++;
+                    }
                 });
                 return Boolean(matches); // филтр по кол-ву совпадений
             })
@@ -149,3 +152,5 @@ class BlockContent {
         this.renderBlocksContent();
     }
 }
+
+export default BlockContent;

@@ -1,3 +1,12 @@
+// constants
+import {CategoriesList} from "constants";
+// services
+import {getData,constructData} from "services";
+
+// submodules
+import BlockContent from "./BlockContent/BlockContent";
+import Categories from "./Categories/Categories";
+
 /**
  *  Основной класс релизующий общую логику и управляющий  отдельными частями модуля
  */
@@ -22,7 +31,7 @@ class StructuredContent {
     setFilters = (category, search) => {
         // устанавливаем фильтры
         this.contentState.filters = {search, category};
-        this.blockContentInstance.reRenderBlocks(); // вызываем ререндер у блока с контентом
+        // this.blockContentInstance.reRenderBlocks(); // вызываем ререндер у блока с контентом
     }
 
     /**
@@ -60,7 +69,7 @@ class StructuredContent {
             contentFields
         } // параметры родителя для проброса в дочерние инстансы
 
-        // создание инстансов дочерних компонентов
+        // // создание инстансов дочерних компонентов
         this.categoriesInstance = new Categories(CategoriesList, root, parentParametrs);
         this.blockContentInstance = new BlockContent(root, parentParametrs);
 
@@ -68,3 +77,5 @@ class StructuredContent {
         this.render();
     }
 }
+
+export  default  StructuredContent;
