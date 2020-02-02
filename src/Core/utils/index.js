@@ -28,10 +28,10 @@ export function toggleAcive({nodeList, currentAttr, attributeName}, selector, ca
  */
 export const filterData = (search, array, fields) =>
     array.filter(element => {
-      let matches = 0;
-      fields.forEach(field => {
+        let matches = 0;
+        fields.forEach(field => {
             if (element[field]) {
-                element[field].includes(search) && matches ++;
+                element[field].includes(search) && matches++;
             }
         })
         return matches;

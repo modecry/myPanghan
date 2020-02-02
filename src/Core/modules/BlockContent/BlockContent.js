@@ -20,11 +20,11 @@ class BlockContent {
      */
     applyFilters = () => {
         const {category, search} = this.parentState.filters;
-        if(category) {
-         this.data = filterData(category,this.parentState.data,["category"]);
+        if (category) {
+            this.data = filterData(category, this.parentState.data, ["category"]);
         }
-        if(search){
-            this.data = filterData(search,this.data,this.contentFields);
+        if (search) {
+            this.data = filterData(search, this.data, this.contentFields);
         }
     };
 

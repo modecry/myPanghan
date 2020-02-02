@@ -34,9 +34,9 @@ class StructuredContent {
         const categoryValue = category ? category : "";
         const searchValue = search ? search : "";
 
-        const quires = [{name:"category",value:categoryValue},{name:"search",value:searchValue},];
+        const quires = [{name: "category", value: categoryValue}, {name: "search", value: searchValue},];
 
-        this.contentState.filters = {search:searchValue, category:categoryValue};// устанавливаем фильтры
+        this.contentState.filters = {search: searchValue, category: categoryValue};// устанавливаем фильтры
         changeQuries(quires); // сохранение фильтров в url и  localStorage
 
         if (blockContentInstance) blockContentInstance.reRenderBlocks(); // вызываем ререндер у блока с контентом)
@@ -61,7 +61,7 @@ class StructuredContent {
         const queryCategory = urlParams.get("category");
         const querySearch = urlParams.get("search");
 
-        if (queryCategory||querySearch) {
+        if (queryCategory || querySearch) {
             this.setFilters(queryCategory, querySearch);
         } else {
             this.setFilters(localStorage["category"]);

@@ -6,16 +6,16 @@ const changeQuries = (queries) => {
     const pathName = window.location.pathname; // получаем текущий pathname
 
     let quriesParts = queries.map((query) => { // мапим в массив  преобразованных путей
-        if(!pathName.includes(query.name)){
+        if (!pathName.includes(query.name)) {
             if (query.value) return saveQuery(query); // сохраняем значение
             else
                 return deleteQuery(query); // удаяем значение
         }
     }).filter(Boolean); // отбрасывем пустые
 
-    if(quriesParts.length>1){
+    if (quriesParts.length > 1) {
         quriesParts = `${quriesParts.join("&")}`; // объеденяем по сепаратору
-    }else{
+    } else {
         quriesParts = quriesParts.join("");//  объеденяем по дефолту
     }
 
