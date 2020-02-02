@@ -4,7 +4,7 @@
  * @param data
  * @returns {Promise<any>}
  */
-async function getData(url = "") {
+export const getData = async (url = "") => {
     try {
         return await fetch(url, {
             method: "GET",
@@ -24,7 +24,7 @@ async function getData(url = "") {
  * @param scheme - схема
  * @returns {array}
  */
-const constructData = (data, scheme) => {
+export const constructData = (data, scheme) => {
     return data.map(item => {
         const newObj = {};
         Object.keys(scheme).forEach(propName => {
@@ -40,7 +40,7 @@ const constructData = (data, scheme) => {
  *  Форматирование свойств
  * @param obj - объект с измененными своствами
  */
-const dataFormater = obj => {
+export const dataFormater = obj => {
     const newObj = {};
     Object.keys(obj).forEach(key => {
         let value = obj[key];
@@ -85,6 +85,6 @@ const dataFormater = obj => {
  * @param template - шаблон
  * @returns {string} - строка с нодой шаблона
  */
-function renderTemplate(content, template) {
+export function renderTemplate(content, template) {
     return content ? template : "";
 }

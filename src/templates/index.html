@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="stylesheet" href="index.css"/>
+    <title>Document</title>
+</head>
+<body>
+<div class="services"></div>
+
+</body>
+<script>
+    /*
+		 *  Cхема требуемых данных для рендера
+		 */
+     const SERVICE_SCHEME = {
+        name: "gsx$name",
+        whatsapp: "gsx$whatsapp",
+        telegram: "gsx$telegram",
+        instagram: "gsx$telegram",
+        facebook: "gsx$facebook",
+        service: "gsx$service",
+        description: "gsx$description",
+        category: "gsx$category"
+    };
+
+    /*Настраиваемые параметры для инстанса*/
+    const ServicesConfig = {
+        url: "https://gist.githubusercontent.com/modecrywork/427f419e58130e9b91ad12eb167988cf/raw/82983608f09be778e8a16a3379f58cde53112db6/testdata",
+        scheme: SERVICE_SCHEME
+    }
+
+    const  ServicesContent = new StructuredContent(ServicesConfig,".services");
+    ServicesContent.init(); // инициализируем контент
+
+</script>
+</html>

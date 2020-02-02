@@ -1,3 +1,12 @@
+// constants
+import {CategoriesList} from "constants";
+// services
+import {getData, constructData} from "services";
+import changeQuries from "services/changeQuries"
+// submodules
+import BlockContent from "./BlockContent/BlockContent";
+import Categories from "./Categories/Categories";
+
 /**
  *  Основной класс релизующий общую логику и управляющий  отдельными частями модуля
  */
@@ -19,10 +28,19 @@ class StructuredContent {
      * @param category - требуемая категория
      * @param search - строка с поиском
      */
-    setFilters = (category, search) => {
-        // устанавливаем фильтры
-        this.contentState.filters = {search, category};
-        this.blockContentInstance.reRenderBlocks(); // вызываем ререндер у блока с контентом
+    setFilters = (category = "", search = "") => {
+        const {blockContentInstance} = this;
+        // значение фильтров
+        const categoryValue = category ? category : "";
+        const searchValue = search ? search : "";
+
+        const quires = [{name: "category", value: categoryValue}, {name: "search", value: searchValue},];
+
+        this.contentState.filters = {search: searchValue, category: categoryValue};// устанавливаем фильтры
+        changeQuries(quires); // сохранение фильтров в url и  localStorage
+
+        if (blockContentInstance) blockContentInstance.reRenderBlocks(); // вызываем ререндер у блока с контентом)
+
     }
 
     /**
@@ -31,10 +49,25 @@ class StructuredContent {
      */
     getIntitalData = async () => {
         const {url, scheme} = this.contentConfig;
-        const {feed} = await getData(url);
-        // Конструируем нужный формат данных на основе схемы
-        this.contentState.data = constructData(feed.entry, scheme);
+        const {feed} = await getData(url); // запрашиваем данные
+        this.contentState.data = constructData(feed.entry, scheme); // форматируем данные на основе схемы
+        this.getQueryFilters(); //  получем фильтры
     }
+
+    getQueryFilters = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // GET  парамеmы
+        const queryCategory = urlParams.get("category");
+        const querySearch = urlParams.get("search");
+
+        if (queryCategory || querySearch) {
+            this.setFilters(queryCategory, querySearch);
+        } else {
+            this.setFilters(localStorage["category"]);
+        }
+    }
+
 
     /**
      *  Метод рендеринга вызывает иницилизвцию вложенных инстансов
@@ -51,7 +84,6 @@ class StructuredContent {
      */
     init = async () => {
         await this.getIntitalData(); // установка исходных данных
-
         const {root, setFilters, contentConfig: {scheme}} = this;
         const contentFields = Object.keys(scheme); // наейминги для полей
         const parentParametrs = {
@@ -68,3 +100,5 @@ class StructuredContent {
         this.render();
     }
 }
+
+export default StructuredContent;

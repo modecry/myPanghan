@@ -1,3 +1,4 @@
+import {toggleAcive} from "utils";
 /**
  *  Класс для формирования категорий
  */
@@ -31,7 +32,7 @@ class Categories {
         const callbackCategories = () => {
             const {search} = this.parentState.filters;
             if (category.classList.value.includes("active")) {
-                setFilters("", search); // отчитска фильтра по категорям
+                setFilters("",search); // отчитска фильтра по категорям
             } else {
                 setFilters(categoryName, search); // установка фильтра по категорям
             }
@@ -51,7 +52,9 @@ class Categories {
      * @returns {string} - Строка с нодой
      */
     renderCategory = ({name: text, attr}) => {
-        return `<div class="catbtn" name="${attr}">${text}</div>`;
+        const active = this.parentState.filters.category  === text?"active":"";
+
+        return `<div class="catbtn ${active}" name="${attr}">${text}</div>`;
     };
 
     /**
@@ -82,3 +85,5 @@ class Categories {
         this.renderCategories();
     };
 }
+
+export default Categories;
