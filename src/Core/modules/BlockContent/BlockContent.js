@@ -1,3 +1,6 @@
+// services
+import {renderTemplate} from "services";
+
 /**
  *  Класс реализущий вывод основных блоков с контентом на основе данных
  */
@@ -13,16 +16,16 @@ class BlockContent {
      *  Метод применения фильтров и поиска
      */
     applyFilters = () => {
-        const {category, search,} = this.parentState.filters;
+        const {category, search} = this.parentState.filters;
         // проверка на существование фильтров || поиска
         if (category || search) {
             this.data = [...this.parentState.data].filter((element) => {
                 let matches = 0;
-                element["category"].toLowerCase() === category.toLowerCase() && matches++;
+                if(category) element["category"].toLowerCase() === category.toLowerCase() && matches++;
                 this.contentFields.forEach(field => {
-                     if( search && element[field]) {
-                         element[field].includes(search) && matches++;
-                     }
+                    if (search && element[field]) {
+                        element[field].includes(search) && matches++;
+                    }
                 });
                 return Boolean(matches); // филтр по кол-ву совпадений
             })
@@ -145,7 +148,10 @@ class BlockContent {
     /**
      *  Иницилизация блока
      */
-    init = () => {
+    init = async () => {
+        await this.applyFilters();
         this.renderBlocksContent();
     }
 }
+
+export default BlockContent;

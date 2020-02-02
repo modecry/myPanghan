@@ -26,7 +26,7 @@ const minimazeConfig = [
 ];
 
 const baseConfig = {
-    entry: ['./src/index.js',"./src/templates/index.css"],
+    entry: ['./src/Core/index.js',"./src/templates/index.css"],
     output: {
         filename: 'index_bundle.js',
         path: path.resolve("./build"),
@@ -60,7 +60,15 @@ const baseConfig = {
     performance: {
         hints: false
     },
-
+   resolve:{
+       alias: {
+           core: path.resolve(__dirname, "core/"),
+           constants: path.resolve(__dirname, "core/constants/"),
+           modules: path.resolve(__dirname, "core/modules/"),
+           services: path.resolve(__dirname, "core/services/"),
+           utils: path.resolve(__dirname, "core/utils/"),
+       }
+   }
 };
 
 const productionConfig = {
@@ -80,8 +88,7 @@ const productionConfig = {
 
 const devConfig = {
     devServer: {
-        contentBase:"./build",
-        compress: true,
+        contentBase:path.resolve("./dist"),
         port: 9000,
         overlay: true
     },

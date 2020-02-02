@@ -1,3 +1,4 @@
+import {toggleAcive} from "utils";
 /**
  *  Класс для формирования категорий
  */
@@ -82,3 +83,5 @@ class Categories {
         this.renderCategories();
     };
 }
+
+export default Categories;
