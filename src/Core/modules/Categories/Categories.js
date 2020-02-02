@@ -59,6 +59,7 @@ class Categories {
 
     /**
      *  Рендер категорий
+     *  TODO: переделать рендер
      */
     renderCategories = () => {
         const {root, renderCategory} = this;

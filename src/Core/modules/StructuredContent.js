@@ -6,6 +6,7 @@ import changeQuries from "services/changeQuries"
 // submodules
 import BlockContent from "./BlockContent/BlockContent";
 import Categories from "./Categories/Categories";
+import SearchPanel from "./SearchPanel/SearchPanel";
 
 /**
  *  Основной класс релизующий общую логику и управляющий  отдельными частями модуля
@@ -73,9 +74,12 @@ class StructuredContent {
      *  Метод рендеринга вызывает иницилизвцию вложенных инстансов
      */
     render = () => {
-        const {categoriesInstance, blockContentInstance} = this;
+        const {categoriesInstance, blockContentInstance, contentConfig: {hasSearch}} = this;
         categoriesInstance.init();
         blockContentInstance.init();
+        if (hasSearch) {
+            this.searchPanel.init();
+        }
     }
 
     /**
@@ -84,7 +88,7 @@ class StructuredContent {
      */
     init = async () => {
         await this.getIntitalData(); // установка исходных данных
-        const {root, setFilters, contentConfig: {scheme}} = this;
+        const {root, setFilters, contentConfig: {scheme, hasSearch}} = this;
         const contentFields = Object.keys(scheme); // наейминги для полей
         const parentParametrs = {
             methods: {setFilters},
@@ -95,6 +99,11 @@ class StructuredContent {
         // создание инстансов дочерних компонентов
         this.categoriesInstance = new Categories(CategoriesList, root, parentParametrs);
         this.blockContentInstance = new BlockContent(root, parentParametrs);
+
+        if (hasSearch) {
+            this.searchPanel = new SearchPanel(root, parentParametrs);
+            console.log(1);
+        }
 
         // непосредственный рендеринг
         this.render();
