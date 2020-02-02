@@ -2,14 +2,13 @@
 import {CategoriesList} from "constants";
 // services
 import {getData, constructData} from "services";
-import saveFiltersQueries from "services/saveFiltersQueries"
+import changeQuries from "services/changeQuries"
 // submodules
 import BlockContent from "./BlockContent/BlockContent";
 import Categories from "./Categories/Categories";
 
 /**
  *  Основной класс релизующий общую логику и управляющий  отдельными частями модуля
- *  //TODO: разделить поиск от фильтров
  */
 class StructuredContent {
     constructor(contentConfig, selector) {
@@ -31,13 +30,14 @@ class StructuredContent {
      */
     setFilters = (category = "", search = "") => {
         const {blockContentInstance} = this;
-
+        // значение фильтров
         const categoryValue = category ? category : "";
         const searchValue = search ? search : "";
 
-        // устанавливаем фильтры
-        this.contentState.filters = {search:searchValue, category:categoryValue};
-        saveFiltersQueries(category, search); // сохранение фильтров в utl и  localStorage
+        const quires = [{name:"category",value:categoryValue},{name:"search",value:searchValue},];
+
+        this.contentState.filters = {search:searchValue, category:categoryValue};// устанавливаем фильтры
+        changeQuries(quires); // сохранение фильтров в url и  localStorage
 
         if (blockContentInstance) blockContentInstance.reRenderBlocks(); // вызываем ререндер у блока с контентом)
 
@@ -49,22 +49,22 @@ class StructuredContent {
      */
     getIntitalData = async () => {
         const {url, scheme} = this.contentConfig;
-        const {feed} = await getData(url);
-        // Конструируем нужный формат данных на основе схемы
-        this.contentState.data = constructData(feed.entry, scheme);
-        this.getQuriesFilters();
+        const {feed} = await getData(url); // запрашиваем данные
+        this.contentState.data = constructData(feed.entry, scheme); // форматируем данные на основе схемы
+        this.getQueryFilters(); //  получем фильтры
     }
 
-    getQuriesFilters = () => {
+    getQueryFilters = () => {
         const urlParams = new URLSearchParams(window.location.search);
-        // GET  параметры
+
+        // GET  парамеmы
         const queryCategory = urlParams.get("category");
         const querySearch = urlParams.get("search");
 
-        if (queryCategory || querySearch) {
+        if (queryCategory||querySearch) {
             this.setFilters(queryCategory, querySearch);
         } else {
-            this.setFilters(localStorage["category"], localStorage["search"]);
+            this.setFilters(localStorage["category"]);
         }
     }
 
@@ -92,7 +92,7 @@ class StructuredContent {
             contentFields
         } // параметры родителя для проброса в дочерние инстансы
 
-        // // создание инстансов дочерних компонентов
+        // создание инстансов дочерних компонентов
         this.categoriesInstance = new Categories(CategoriesList, root, parentParametrs);
         this.blockContentInstance = new BlockContent(root, parentParametrs);
 

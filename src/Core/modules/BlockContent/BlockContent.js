@@ -1,3 +1,6 @@
+// utils
+import {filterData} from "utils";
+
 // services
 import {renderTemplate} from "services";
 
@@ -17,20 +20,11 @@ class BlockContent {
      */
     applyFilters = () => {
         const {category, search} = this.parentState.filters;
-        // проверка на существование фильтров || поиска
-        if (category || search) {
-            this.data = [...this.parentState.data].filter((element) => {
-                let matches = 0;
-                if(category) element["category"].toLowerCase() === category.toLowerCase() && matches++;
-                this.contentFields.forEach(field => {
-                    if (search && element[field]) {
-                        element[field].includes(search) && matches++;
-                    }
-                });
-                return Boolean(matches); // филтр по кол-ву совпадений
-            })
-        } else {
-            this.data = this.parentState.data;
+        if(category) {
+         this.data = filterData(category,this.parentState.data,["category"]);
+        }
+        if(search){
+            this.data = filterData(search,this.data,this.contentFields);
         }
     };
 
@@ -122,7 +116,6 @@ class BlockContent {
     renderBlocksContent = () => {
         const {root, data, renderBlock} = this;
         const services = data.map(service => renderBlock(service)); // мапим блоки по шаблону
-
         // render блока
         const hasBlockContainer = document.querySelector(".blocks");
         const blocksContainer = document.createElement("div");
@@ -141,6 +134,7 @@ class BlockContent {
      * @returns {Promise<void>}
      */
     reRenderBlocks = async () => {
+        this.data = this.parentState.data;
         await this.applyFilters();
         this.renderBlocksContent();
     }

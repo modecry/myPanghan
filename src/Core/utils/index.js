@@ -7,7 +7,7 @@
  * @returns {Function}  - возвращаемая функция для работы с конкретном элементе
  */
 export function toggleAcive({nodeList, currentAttr, attributeName}, selector, callback) {
-    return function() {
+    return function () {
         nodeList.forEach(element => {
             const iterableAttr = element.getAttribute(attributeName);
             if (iterableAttr !== currentAttr) {
@@ -18,3 +18,21 @@ export function toggleAcive({nodeList, currentAttr, attributeName}, selector, ca
         this.classList.toggle(selector);
     };
 }
+
+/**
+ * Фильтр поиска
+ * @param search - искомая строка
+ * @param array - массив объектов по которому осуществляется поиск
+ * @param fields - поля по которым нужно соуществить поиск
+ * @returns {array} - возвращает отфильтрованный array
+ */
+export const filterData = (search, array, fields) =>
+    array.filter(element => {
+      let matches = 0;
+      fields.forEach(field => {
+            if (element[field]) {
+                element[field].includes(search) && matches ++;
+            }
+        })
+        return matches;
+    });
