@@ -6,12 +6,13 @@ import changeQuries from "services/changeQuries"
 // submodules
 import BlockContent from "./BlockContent/BlockContent";
 import Categories from "./Categories/Categories";
+import SearchPanel from "./SearchPanel/SearchPanel";
 
 /**
  *  Основной класс релизующий общую логику и управляющий  отдельными частями модуля
  */
 class StructuredContent {
-    constructor(contentConfig, selector) {
+    constructor(contentConfig, rootSettings) {
         this.contentConfig = contentConfig; // основная конфигурация
         this.contentState = {
             filters: {
@@ -20,7 +21,8 @@ class StructuredContent {
             },
             data: []
         } // базовый стейт
-        this.root = document.querySelector(selector); // root  компонент в который будет рендерится контент
+        this.rootNodes = {};
+        this.getRootNodes(rootSettings);
     }
 
     /**
@@ -41,6 +43,16 @@ class StructuredContent {
 
         if (blockContentInstance) blockContentInstance.reRenderBlocks(); // вызываем ререндер у блока с контентом)
 
+    }
+    /**
+     * Получаем ноды для рендеринга
+     * @param roots - объект с классами
+     */
+    getRootNodes = (roots)=> {
+        for (let key in roots) {
+            const val = roots[key];
+            this.rootNodes[key] = document.querySelector(val);
+        }
     }
 
     /**
@@ -68,14 +80,21 @@ class StructuredContent {
         }
     }
 
+    showMarketBlock = (category)=>{
+        const {marketBlocks} = this.contentConfig;
+
+    }
 
     /**
      *  Метод рендеринга вызывает иницилизвцию вложенных инстансов
      */
     render = () => {
-        const {categoriesInstance, blockContentInstance} = this;
+        const {categoriesInstance, blockContentInstance, contentConfig: {filtersSettings}} = this;
         categoriesInstance.init();
         blockContentInstance.init();
+        if (filtersSettings.search) {
+            this.searchPanel.init();
+        }
     }
 
     /**
@@ -84,8 +103,8 @@ class StructuredContent {
      */
     init = async () => {
         await this.getIntitalData(); // установка исходных данных
-        const {root, setFilters, contentConfig: {scheme}} = this;
-        const contentFields = Object.keys(scheme); // наейминги для полей
+        const {rootNodes, setFilters, contentConfig: {scheme, filtersSettings}} = this;
+        const contentFields = filtersSettings.fields; // наейминги для полей
         const parentParametrs = {
             methods: {setFilters},
             state: this.contentState,
@@ -93,8 +112,12 @@ class StructuredContent {
         } // параметры родителя для проброса в дочерние инстансы
 
         // создание инстансов дочерних компонентов
-        this.categoriesInstance = new Categories(CategoriesList, root, parentParametrs);
-        this.blockContentInstance = new BlockContent(root, parentParametrs);
+        this.categoriesInstance = new Categories(CategoriesList, this.rootNodes.categories, parentParametrs);
+        this.blockContentInstance = new BlockContent(this.rootNodes.services, parentParametrs);
+
+        if (filtersSettings.search) {
+            this.searchPanel = new SearchPanel(this.rootNodes.search, parentParametrs);
+        }
 
         // непосредственный рендеринг
         this.render();
