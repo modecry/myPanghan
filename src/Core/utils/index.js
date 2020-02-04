@@ -31,7 +31,7 @@ export const filterData = (search, array, fields) =>
         let matches = 0;
         fields.forEach(field => {
             if (element[field]) {
-                element[field].includes(search) && matches++;
+                element[field].toLowerCase().includes(search.toLowerCase()) && ++matches;
             }
         })
         return matches;

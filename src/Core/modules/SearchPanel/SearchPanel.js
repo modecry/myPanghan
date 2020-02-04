@@ -3,25 +3,45 @@ import {renderTemplate} from "services";
 
 /**
  * Класс панели поиска
- * TODO: оставить коментарии, добавить debounce
  */
 class SearchPanel {
     constructor(root, {methods, state}) {
-        this.methods = methods;
-        this.root = root;
-        this.parentState = state;
+        this.methods = methods; // родительские методы
+        this.root = root; // корневой DOM элемент
+        this.parentState = state; // родительский стейт
     }
 
-    onSearch = (serachInput) => {
+    /**
+     * Функция установки поиска
+     * @param value - значение поиска
+     */
+    setSearch = (value) => {
+        const {category} = this.parentState.filters;
+        this.methods.setFilters(category, value);
+    }
+
+    /**
+     *  Обработчик клика по кнопке поиска
+     * @param serachInput - требуемый Node елемент
+     * @returns {Function} - возвращается функция вызова изменения фильтров
+     */
+    onButtonClick = (searchInput) => {
         const {setFilters} = this.methods;
-        return () => {
-            const value = serachInput.value;
-            const {category} = this.parentState.filters;
-            setFilters(category, value);
-        }
+       return ()=>this.setSearch(searchInput.value);
     }
 
+    /**
+     *  Обработчик нажатия Enter
+     * @param e - event объект
+     */
+    onEnterClickHandler = (e) => {
+        if (e.keyCode === 13)
+            this.setSearch(e.target.value);
+    }
 
+    /**
+     *  рендер шаблона поиска
+     */
     render = () => {
         const {root} = this;
         const searchInner = `
@@ -37,11 +57,16 @@ class SearchPanel {
         root.appendChild(SearchContainer);
 
         const searchButton = document.querySelector(".searchButton");
-        const serarchInput = document.querySelector(".searchTerm");
+        const searchInput = document.querySelector(".searchTerm");
 
-        searchButton.addEventListener("click", this.onSearch(serarchInput))
+        searchButton.addEventListener("click", this.onButtonClick(searchInput)); // обработчик на клик
+        searchInput.addEventListener("keydown", this.onEnterClickHandler); // обработчик на нажатие ENTER
     }
 
+    /**
+     * Иницилизация модуля
+     * @returns {Promise<void>}
+     */
     init = async () => {
         await this.render();
     }
