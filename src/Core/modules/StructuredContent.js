@@ -80,6 +80,10 @@ class StructuredContent {
         }
     }
 
+    showMarketBlock = (category)=>{
+        const {marketBlocks} = this.contentConfig;
+
+    }
 
     /**
      *  Метод рендеринга вызывает иницилизвцию вложенных инстансов
