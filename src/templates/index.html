@@ -9,9 +9,9 @@
     <title>Document</title>
 </head>
 <body>
-<div class="services"></div>
-</div>
-
+<div class="categories-container main_container t-rec_pt_0 t-rec_pb_30 t-container"></div>
+<div class="search-container main_container t-rec_pt_0 t-rec_pb_30 t-container"></div>
+<div class="services-container main_container t-rec_pt_0 t-rec_pb_30 t-container"></div>
 </body>
 <script>
     /*
@@ -37,8 +37,13 @@
             fields:["name","service","description","category"]
         }
     }
+    const rootSettings = {
+        services: ".services-container",
+        categories: ".categories-container",
+        search: ".search-container",
+    }
 
-    const  ServicesContent = new StructuredContent(ServicesConfig,".services");
+    const  ServicesContent = new StructuredContent(ServicesConfig,rootSettings);
     ServicesContent.init(); // инициализируем контент
 
 </script>

@@ -68,7 +68,7 @@ class Categories {
         // непосредственный рендер категорий в контейнер
         root.innerHTML = `
             ${root.innerHTML}
-            <div id="mycategories" class="t-rec_pt_0 t-rec_pb_30 t-container">
+            <div id="mycategories" class="inner_content">
                 ${categories.join("")}
             </div>
         `;
