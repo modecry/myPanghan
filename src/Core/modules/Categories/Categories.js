@@ -4,7 +4,7 @@ import {toggleAcive} from "utils";
  */
 class Categories {
     constructor(categoriesList, root, {methods, state}) {
-        this.categoriesList = categoriesList;  // массив категорий
+        this.categoriesList = state.categories;  // массив категорий
         this.nodeListCategories = null;  // лист node  объектов
         this.root = root; // корневой root элемент
         this.parentMethods = methods; // родительские методы
@@ -32,9 +32,9 @@ class Categories {
         const callbackCategories = () => {
             const {search} = this.parentState.filters;
             if (category.classList.value.includes("active")) {
-                setFilters("",search); // отчитска фильтра по категорям
+                setFilters(); // отчитска фильтра по категорям
             } else {
-                setFilters(categoryName, search); // установка фильтра по категорям
+                setFilters(currentAttr); // установка фильтра по категорям
             }
         }
 
@@ -51,10 +51,10 @@ class Categories {
      * @param attr - [name] атрибут ноды
      * @returns {string} - Строка с нодой
      */
-    renderCategory = ({name: text, attr}) => {
-        const active = this.parentState.filters.category  === text?"active":"";
+    renderCategory = ({name: text, className}) => {
+        const active = this.parentState.filters.category  === className?"active":"";
 
-        return `<div class="catbtn ${active}" name="${attr}">${text}</div>`;
+        return `<div class="catbtn ${active}" name="${className}">${text}</div>`;
     };
 
     /**
@@ -68,8 +68,10 @@ class Categories {
         // непосредственный рендер категорий в контейнер
         root.innerHTML = `
             ${root.innerHTML}
-            <div id="mycategories" class="inner_content">
-                ${categories.join("")}
+            <div class="t-col t-col_10 t-prefix_1 t-text">            
+                <div id="mycategories" class="inner_content">
+                    ${categories.join("")}
+                </div>
             </div>
         `;
 

@@ -4,11 +4,6 @@
 /*
 * main
 */
-.main_container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
 .inner_content {
   width: 50%;
 }

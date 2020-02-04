@@ -1,7 +1,7 @@
 // constants
 import {CategoriesList} from "constants";
 // services
-import {getData, constructData} from "services";
+import {getData, constructData, categoryCollector} from "services";
 import changeQuries from "services/changeQuries"
 // submodules
 import BlockContent from "./BlockContent/BlockContent";
@@ -19,7 +19,8 @@ class StructuredContent {
                 search: "",
                 category: ""
             },
-            data: []
+            data: [],
+            categories: []
         } // базовый стейт
         this.rootNodes = {};
         this.getRootNodes(rootSettings);
@@ -63,6 +64,7 @@ class StructuredContent {
         const {url, scheme} = this.contentConfig;
         const {feed} = await getData(url); // запрашиваем данные
         this.contentState.data = constructData(feed.entry, scheme); // форматируем данные на основе схемы
+        this.contentState.categories = categoryCollector(this.contentState.data);
         this.getQueryFilters(); //  получем фильтры
     }
 
