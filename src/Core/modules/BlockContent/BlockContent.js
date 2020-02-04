@@ -24,7 +24,8 @@ class BlockContent {
             this.data = filterData(category, this.parentState.data, ["category"]);
         }
         if (search) {
-            this.data = filterData(search, this.data, this.contentFields);
+            const withOutCategory = this.contentFields.filter(item=>item!=="category");
+            this.data = filterData(search, this.data, withOutCategory);
         }
     };
 

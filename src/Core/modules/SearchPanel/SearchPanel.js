@@ -25,9 +25,9 @@ class SearchPanel {
      * @param serachInput - требуемый Node елемент
      * @returns {Function} - возвращается функция вызова изменения фильтров
      */
-    onButtonClick = (serchInput) => {
+    onButtonClick = (searchInput) => {
         const {setFilters} = this.methods;
-        this.setSearch(serchInput.value);
+       return ()=>this.setSearch(searchInput.value);
     }
 
     /**
@@ -57,10 +57,10 @@ class SearchPanel {
         root.appendChild(SearchContainer);
 
         const searchButton = document.querySelector(".searchButton");
-        const serchInput = document.querySelector(".searchTerm");
+        const searchInput = document.querySelector(".searchTerm");
 
-        searchButton.addEventListener("click", this.onButtonClick(serchInput)); // обработчик на клик
-        serchInput.addEventListener("keydown", this.onEnterClickHandler); // обработчик на нажатие ENTER
+        searchButton.addEventListener("click", this.onButtonClick(searchInput)); // обработчик на клик
+        searchInput.addEventListener("keydown", this.onEnterClickHandler); // обработчик на нажатие ENTER
     }
 
     /**

@@ -74,10 +74,10 @@ class StructuredContent {
      *  Метод рендеринга вызывает иницилизвцию вложенных инстансов
      */
     render = () => {
-        const {categoriesInstance, blockContentInstance, contentConfig: {hasSearch}} = this;
+        const {categoriesInstance, blockContentInstance, contentConfig: {filtersSettings}} = this;
         categoriesInstance.init();
         blockContentInstance.init();
-        if (hasSearch) {
+        if (filtersSettings.search) {
             this.searchPanel.init();
         }
     }
@@ -88,8 +88,8 @@ class StructuredContent {
      */
     init = async () => {
         await this.getIntitalData(); // установка исходных данных
-        const {root, setFilters, contentConfig: {scheme, hasSearch}} = this;
-        const contentFields = Object.keys(scheme); // наейминги для полей
+        const {root, setFilters, contentConfig: {scheme, filtersSettings}} = this;
+        const contentFields = filtersSettings.fields; // наейминги для полей
         const parentParametrs = {
             methods: {setFilters},
             state: this.contentState,
@@ -100,9 +100,8 @@ class StructuredContent {
         this.categoriesInstance = new Categories(CategoriesList, root, parentParametrs);
         this.blockContentInstance = new BlockContent(root, parentParametrs);
 
-        if (hasSearch) {
+        if (filtersSettings.search) {
             this.searchPanel = new SearchPanel(root, parentParametrs);
-            console.log(1);
         }
 
         // непосредственный рендеринг
