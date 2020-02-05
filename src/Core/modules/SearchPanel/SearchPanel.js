@@ -1,6 +1,3 @@
-// services
-import {renderTemplate} from "services";
-
 /**
  * Класс панели поиска
  */
@@ -16,18 +13,17 @@ class SearchPanel {
      * @param value - значение поиска
      */
     setSearch = (value) => {
-        const {category} = this.parentState.filters;
-        this.methods.setFilters(category, value);
+        this.methods.setFilters("", value);
+        this.methods.clearCategories(); // сброс категорий
     }
 
     /**
      *  Обработчик клика по кнопке поиска
-     * @param serachInput - требуемый Node елемент
+     * @param searchInput - требуемый Node елемент
      * @returns {Function} - возвращается функция вызова изменения фильтров
      */
     onButtonClick = (searchInput) => {
-        const {setFilters} = this.methods;
-       return ()=>this.setSearch(searchInput.value);
+        return () => this.setSearch(searchInput.value);
     }
 
     /**
@@ -52,13 +48,14 @@ class SearchPanel {
         `;
         // render  панели поиска
         const SearchContainer = document.createElement("div");
-        SearchContainer.classList = "search-panel inner_content";
+        SearchContainer.classList = "search-panel t-col t-col_10 t-prefix_1 t-text";
         SearchContainer.innerHTML = searchInner;
         root.appendChild(SearchContainer);
 
         const searchButton = document.querySelector(".searchButton");
         const searchInput = document.querySelector(".searchTerm");
 
+        /*Обработчки ввода*/
         searchButton.addEventListener("click", this.onButtonClick(searchInput)); // обработчик на клик
         searchInput.addEventListener("keydown", this.onEnterClickHandler); // обработчик на нажатие ENTER
     }
