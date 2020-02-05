@@ -9,25 +9,49 @@ import {renderTemplate} from "services";
  */
 class BlockContent {
     constructor(root, {state, contentFields}) {
-        this.data = state.data; // установка дефолтного стейта
+        this.filtredState = state.data;
         this.root = root; // корневой элемент для рендера
         this.parentState = state; // родительский стейт
-        this.contentFields = contentFields; // нейминги полей
+        this.childrenNodes = [];
+        this.contentFields = contentFields; // нейминги полей для фильтрации
     }
 
     /**
      *  Метод применения фильтров и поиска
      */
     applyFilters = () => {
+        const {categories} = this.parentState;
         const {category, search} = this.parentState.filters;
+        this.filtredState = this.parentState.data.map(({id}) => id);
         if (category) {
-            this.data = filterData(category, this.parentState.data, ["category"]);
+            const cat = categories.find(({className}) => className === category);
+            if (cat) {
+                this.filtredState = filterData(cat.name, this.parentState.data, ["cat"]).map(({id}) => id);
+            }
         }
+
         if (search) {
-            const withOutCategory = this.contentFields.filter(item=>item!=="category");
-            this.data = filterData(search, this.data, withOutCategory);
+            const withOutCategory = this.contentFields.filter(item => item !== "cat");
+            this.filtredState = filterData(search, this.parentState.data, withOutCategory).map(({id})=>id);
         }
+
+        this.toggleVisible();
     };
+
+    /**
+     *  Скрывает/ Показывает блоки в зависимости от массива идентификаторов
+     */
+    toggleVisible = () => {
+        const {childrenNodes, filtredState} = this;
+        for (let i = 0; i < childrenNodes.length; i++) {
+            const attr = childrenNodes[i].getAttribute("data-id");
+            childrenNodes[i].classList.add("hidden");
+            if (filtredState.includes(parseInt(attr))) {
+                childrenNodes[i].classList.remove("hidden");
+            }
+        }
+    }
+
 
     /**
      *  Метод рендера 1 экземпляра блока с контентом
@@ -38,11 +62,11 @@ class BlockContent {
      * @param facebook - никнейм фейсбук
      * @param service - название услуги
      * @param description - заголовок услуги
-     * @param index - индекс для data атрибута
+     * @param id - id для data атрибута
      * @returns {string} - строка с DOM элементом
      */
-    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, index}) => {
-
+    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id}) => {
+        
         // заголовок
         const title = renderTemplate(service, `
             <div class="t513__title t-heading t-heading_xs">
@@ -99,7 +123,7 @@ class BlockContent {
 
         // возвращаем темплейт
         return `
-              <div class="content-block" data-index="${index}">
+              <div class="content-block" data-id="${id}">
                   ${title}
                   <div class="content-block-title">Контакты</div>
                   <div class="content-block-contacts">
@@ -116,13 +140,16 @@ class BlockContent {
      *  Рендер блоков на основе данных
      */
     renderBlocksContent = () => {
-        const {root, data, renderBlock} = this;
+        const {root, parentState: {data}, renderBlock} = this;
         const services = data.map(service => renderBlock(service)); // мапим блоки по шаблону
         // render блока
         const hasBlockContainer = document.querySelector(".blocks");
         const blocksContainer = document.createElement("div");
         blocksContainer.classList.add("blocks");
         blocksContainer.innerHTML = services.join("");
+
+        this.childrenNodes = blocksContainer.children; // сохраняем коллекцию дочерних элементов
+
         // проверка на существование блока
         if (hasBlockContainer) {
             root.replaceChild(blocksContainer, hasBlockContainer);
@@ -136,17 +163,15 @@ class BlockContent {
      * @returns {Promise<void>}
      */
     reRenderBlocks = async () => {
-        this.data = this.parentState.data;
         await this.applyFilters();
-        this.renderBlocksContent();
     }
 
     /**
      *  Иницилизация блока
      */
     init = async () => {
-        await this.applyFilters();
         this.renderBlocksContent();
+        await this.applyFilters();
     }
 }
 

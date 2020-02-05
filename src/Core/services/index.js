@@ -27,7 +27,7 @@ export const getData = async (url = "") => {
 export const constructData = (data, scheme) => {
     return data.map((item,index) => {
         const newObj = {};
-        newObj["index"] = index;
+        newObj["id"] = index;
         Object.keys(scheme).forEach((propName) => {
             const schemeValueProp = scheme[propName];
             if (item.hasOwnProperty(schemeValueProp))

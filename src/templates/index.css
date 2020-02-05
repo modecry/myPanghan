@@ -112,3 +112,7 @@
   transform: translateY(-50%);
   fill:#ffffff;
 }
+
+.hidden {
+  display: none;
+}
