@@ -20,22 +20,22 @@ class BlockContent {
      *  Метод применения фильтров и поиска
      */
     applyFilters = () => {
-        const {categories} = this.parentState;
-        const {category, search} = this.parentState.filters;
-        this.filtredState = this.parentState.data.map(({id}) => id);
+        const {categories} = this.parentState; // лист категорий
+        const {category, search} = this.parentState.filters; // значения фильтров
+        this.filtredState = this.parentState.data.map(({id}) => id); // мапим массив id's всеъ элементов
+
         if (category) {
-            const cat = categories.find(({className}) => className === category);
+            const cat = categories.find(({className}) => className === category); // находим значение категории
             if (cat) {
-                this.filtredState = filterData(cat.name, this.parentState.data, ["cat"]).map(({id}) => id);
+                this.filtredState = filterData(cat.name, this.parentState.data, ["cat"]).map(({id}) => id); // фильтруем массив id's
             }
         }
 
         if (search) {
-            const withOutCategory = this.contentFields.filter(item => item !== "cat");
-            this.filtredState = filterData(search, this.parentState.data, withOutCategory).map(({id})=>id);
+            this.filtredState = filterData(search, this.parentState.data, this.contentFields).map(({id}) => id);
         }
 
-        this.toggleVisible();
+        this.toggleVisible(); // переключение видимости блоков
     };
 
     /**
@@ -66,7 +66,7 @@ class BlockContent {
      * @returns {string} - строка с DOM элементом
      */
     renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id}) => {
-        
+
         // заголовок
         const title = renderTemplate(service, `
             <div class="t513__title t-heading t-heading_xs">
@@ -141,29 +141,16 @@ class BlockContent {
      */
     renderBlocksContent = () => {
         const {root, parentState: {data}, renderBlock} = this;
-        const services = data.map(service => renderBlock(service)); // мапим блоки по шаблону
+        const services = data.map(renderBlock); // мапим блоки по шаблонному методу
+
         // render блока
-        const hasBlockContainer = document.querySelector(".blocks");
         const blocksContainer = document.createElement("div");
         blocksContainer.classList.add("blocks");
         blocksContainer.innerHTML = services.join("");
+        root.appendChild(blocksContainer);
 
         this.childrenNodes = blocksContainer.children; // сохраняем коллекцию дочерних элементов
 
-        // проверка на существование блока
-        if (hasBlockContainer) {
-            root.replaceChild(blocksContainer, hasBlockContainer);
-        } else {
-            root.appendChild(blocksContainer);
-        }
-    }
-
-    /**
-     * Ре-рендер блоков
-     * @returns {Promise<void>}
-     */
-    reRenderBlocks = async () => {
-        await this.applyFilters();
     }
 
     /**
