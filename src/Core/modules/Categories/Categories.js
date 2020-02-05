@@ -25,7 +25,6 @@ class Categories {
         const attributeName = "name"; // требуемый атрибут для установки класса active
         const currentAttr = category.getAttribute(attributeName); // атрибут конкретной ноды
         const categoryName = category.innerText; // получаем нейминг категории
-
         /**
          * Коллбэк пробрасываемый в метод toggle
          */
@@ -54,7 +53,7 @@ class Categories {
     renderCategory = ({name: text, className}) => {
         const active = this.parentState.filters.category  === className?"active":"";
 
-        return `<div class="catbtn ${active}" name="${className}">${text}</div>`;
+        return `<div class="catbtn ${active} ${className}" name="${className}">${text}</div>`;
     };
 
     /**
