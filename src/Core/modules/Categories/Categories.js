@@ -3,7 +3,7 @@ import {toggleAcive} from "utils";
  *  Класс для формирования категорий
  */
 class Categories {
-    constructor(categoriesList, root, {methods, state}) {
+    constructor(root, {methods, state}) {
         this.categoriesList = state.categories;  // массив категорий
         this.nodeListCategories = null;  // лист node  объектов
         this.root = root; // корневой root элемент

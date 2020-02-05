@@ -1,5 +1,3 @@
-// constants
-import {CategoriesList} from "constants";
 // services
 import {getData, constructData, categoryCollector} from "services";
 import changeQuries from "services/changeQuries"
@@ -64,10 +62,13 @@ class StructuredContent {
         const {url, scheme} = this.contentConfig;
         const {feed} = await getData(url); // запрашиваем данные
         this.contentState.data = constructData(feed.entry, scheme); // форматируем данные на основе схемы
-        this.contentState.categories = categoryCollector(this.contentState.data);
+        this.contentState.categories = categoryCollector(this.contentState.data); // собираем категории
         this.getQueryFilters(); //  получем фильтры
     }
 
+    /**
+     *  Получение фильтров
+     */
     getQueryFilters = () => {
         const urlParams = new URLSearchParams(window.location.search);
 
@@ -80,11 +81,6 @@ class StructuredContent {
         } else {
             this.setFilters(localStorage["category"]);
         }
-    }
-
-    showMarketBlock = (category)=>{
-        const {marketBlocks} = this.contentConfig;
-
     }
 
     /**
@@ -114,7 +110,7 @@ class StructuredContent {
         } // параметры родителя для проброса в дочерние инстансы
 
         // создание инстансов дочерних компонентов
-        this.categoriesInstance = new Categories(CategoriesList, this.rootNodes.categories, parentParametrs);
+        this.categoriesInstance = new Categories(this.rootNodes.categories, parentParametrs);
         this.blockContentInstance = new BlockContent(this.rootNodes.services, parentParametrs);
 
         if (filtersSettings.search) {
