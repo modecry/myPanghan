@@ -2,7 +2,7 @@
   "name": "myPanghan",
   "version": "1.0.0",
   "description": "module for website on tilda.cc",
-  "main": "old/index.js",
+  "main": "src/Core/index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack   --mode=production --config ./src/webpack.config.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./src/webpack.config.js"
