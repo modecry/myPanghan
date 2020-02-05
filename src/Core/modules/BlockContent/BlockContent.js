@@ -68,58 +68,28 @@ class BlockContent {
     renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id}) => {
 
         // заголовок
-        const title = renderTemplate(service, `
-            <div class="t513__title t-heading t-heading_xs">
-               ${service}
-            </div>
-        `);
+        const title = renderTemplate(service, `<div class="t513__title t-heading t-heading_xs">${service}</div>`);
 
         // whatsapp
-        const whatsApp = renderTemplate(whatsapp, `
-            <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a>
-        `);
+        const whatsApp = renderTemplate(whatsapp, `<a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a>`);
 
         // telegram
-        const telegrm = renderTemplate(telegram, `
-            <a href="tg://resolve?domain=${telegram}" target="_blank">Telegram</a>
-        `);
+        const telegrm = renderTemplate(telegram, `<a href="tg://resolve?domain=${telegram}" target="_blank">Telegram</a>`);
 
         // insta
-        const insta = renderTemplate(instagram, `
-            <a href="https://instagram.com/${instagram}" target="_blank">Instagram</a>
-        `);
+        const insta = renderTemplate(instagram, `<a href="https://instagram.com/${instagram}" target="_blank">Instagram</a>`);
 
         // facebook
-        const facebk = renderTemplate(facebook, `
-            <a href="https://www.facebook.com/${facebook}" target="_blank">Facebook</a>
-        `);
+        const facebk = renderTemplate(facebook, `<a href="https://www.facebook.com/${facebook}" target="_blank">Facebook</a>`);
 
         //  контакты
-        const constants = renderTemplate(name, `
-            <div class="content-block-contacts">
-              <strong>${name}</strong>
-                ${whatsApp}
-                ${telegrm}
-                ${insta}
-                ${facebk}
-            </div>
-        `);
+        const contacts = renderTemplate(name, `<div class="content-block-contacts"><strong>${name}</strong>${whatsApp}${telegrm}${insta}${facebk}</div>`);
 
         // описание
-        const desc = renderTemplate(name, `
-            <div class="content-block-description">
-              ${description}
-            </div>
-        `);
+        const desc = renderTemplate(name, `<div class="content-block-description">${description}</div>`);
 
         // возвращаем темплейт
-        return `
-              <div class="content-block" data-id="${id}">
-                  ${title}
-                  ${constants}
-                  ${desc}
-              </div>
-              `;
+        return `<div class="content-block" data-id="${id}">${title}${contacts}${desc}</div>`;
     }
 
     /**
