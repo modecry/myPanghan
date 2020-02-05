@@ -1,15 +1,19 @@
 {
-  "name": "mypanghan",
+  "name": "myPanghan",
   "version": "1.0.0",
-  "description": "",
+  "description": "module for website on tilda.cc",
   "main": "old/index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack   --mode=production --config ./src/webpack.config.js",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./src/webpack.config.js",
-    "docs": "jsdoc2md src/Core/modules/*.js > api.md"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./src/webpack.config.js"
   },
-  "author": "",
+  "author": "Alexandr Kudryashov",
+  "email" : "modecrywork@gmail.com",
   "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/modecry/myPanghan"
+  },
   "devDependencies": {
     "@babel/core": "^7.8.3",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -30,8 +34,5 @@
     "webpack-dev-server": "^3.10.1",
     "express": "^4.17.1",
     "nodemon": "^2.0.2"
-  },
-  "dependencies": {
-    "jsdoc-to-markdown": "^5.0.3"
   }
 }
