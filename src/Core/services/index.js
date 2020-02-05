@@ -25,9 +25,10 @@ export const getData = async (url = "") => {
  * @returns {array}
  */
 export const constructData = (data, scheme) => {
-    return data.map(item => {
+    return data.map((item,index) => {
         const newObj = {};
-        Object.keys(scheme).forEach(propName => {
+        newObj["id"] = index;
+        Object.keys(scheme).forEach((propName) => {
             const schemeValueProp = scheme[propName];
             if (item.hasOwnProperty(schemeValueProp))
                 newObj[propName] = item[schemeValueProp].$t;
@@ -88,3 +89,18 @@ export const dataFormater = obj => {
 export function renderTemplate(content, template) {
     return content ? template : "";
 }
+
+/**
+ * Коллекционирует категории
+ * @param array - передаваемый объект
+ * @returns {{name: *, className: string}[]} - массив объектов данного вида
+ */
+export function categoryCollector(array){
+    const cats = [...new Set(array.map(({cat})=>cat))];
+    return cats.map((item,index)=>{
+            return {
+                name: item,
+                className: `index-${index}`
+            }
+    })
+};

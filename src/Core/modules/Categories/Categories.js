@@ -3,8 +3,8 @@ import {toggleAcive} from "utils";
  *  Класс для формирования категорий
  */
 class Categories {
-    constructor(categoriesList, root, {methods, state}) {
-        this.categoriesList = categoriesList;  // массив категорий
+    constructor(root, {methods, state}) {
+        this.categoriesList = state.categories;  // массив категорий
         this.nodeListCategories = null;  // лист node  объектов
         this.root = root; // корневой root элемент
         this.parentMethods = methods; // родительские методы
@@ -24,17 +24,15 @@ class Categories {
 
         const attributeName = "name"; // требуемый атрибут для установки класса active
         const currentAttr = category.getAttribute(attributeName); // атрибут конкретной ноды
-        const categoryName = category.innerText; // получаем нейминг категории
 
         /**
          * Коллбэк пробрасываемый в метод toggle
          */
         const callbackCategories = () => {
-            const {search} = this.parentState.filters;
             if (category.classList.value.includes("active")) {
-                setFilters("",search); // отчитска фильтра по категорям
+                setFilters(); // отчитска фильтра по категорям
             } else {
-                setFilters(categoryName, search); // установка фильтра по категорям
+                setFilters(currentAttr,""); // установка фильтра по категорям
             }
         }
 
@@ -46,33 +44,42 @@ class Categories {
     }
 
     /**
-     *  Рендер ноды категории
+     *  сброс класса active
+     */
+    clearCategories = ()=>{
+        const {nodeListCategories} = this;
+        for (let i = 0; i<nodeListCategories.length; i++){
+            nodeListCategories[i].classList.remove("active");
+        }
+    }
+
+    /**
+     * Рендер ноды категории
      * @param text - описание
      * @param attr - [name] атрибут ноды
      * @returns {string} - Строка с нодой
      */
-    renderCategory = ({name: text, attr}) => {
-        const active = this.parentState.filters.category  === text?"active":"";
-
-        return `<div class="catbtn ${active}" name="${attr}">${text}</div>`;
+    renderCategory = ({name: text, className}) => {
+        const active = this.parentState.filters.category  === className?"active":"";
+        return `<div class="catbtn ${active} ${className}" name="${className}">${text}</div>`;
     };
 
     /**
      *  Рендер категорий
-     *  TODO: переделать рендер
      */
     renderCategories = () => {
         const {root, renderCategory} = this;
         const categories = this.categoriesList.map(category => renderCategory(category)); // мапим категории
+        /*Рендеринг*/
+        const container = document.createElement("div");
+        container.classList = "t-col t-col_10 t-prefix_1 t-text";
+        container.innerHTML  = `        
+                <div id="mycategories" class="inner_content">
+                    ${categories.join("")}
+                </div>`;
+        root.appendChild(container);
 
-        // непосредственный рендер категорий в контейнер
-        root.innerHTML = `
-            ${root.innerHTML}
-            <div id="mycategories" class="inner_content">
-                ${categories.join("")}
-            </div>
-        `;
-
+        /*Установка обработчиков*/
         this.nodeListCategories = document.querySelectorAll(".catbtn"); // определяем  лист node
         this.nodeListCategories.forEach(category =>
             category.addEventListener("click", this.toggle(category))

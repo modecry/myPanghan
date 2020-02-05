@@ -9,14 +9,10 @@
 	<title>Document</title>
 </head>
 <body>
-<div class="reclam-container">
-	<div id="reclam-1">dsadsa</div>
-	<div id="reclam-2">dsadsa</div>
-</div>
 
-<div class="categories-container main_container t-rec_pt_0 t-rec_pb_30 t-container"></div>
-<div class="search-container main_container t-rec_pt_0 t-rec_pb_30 t-container"></div>
-<div class="services-container main_container t-rec_pt_0 t-rec_pb_30 t-container"></div>
+<div class="categories-container  t-rec_pt_0 t-rec_pb_15 t-container"></div>
+<div class="search-container  t-rec_pt_0 t-rec_pb_30 t-container"></div>
+<div class="services-container  t-rec_pt_0 t-rec_pb_30 t-container"></div>
 </body>
 <script>
     /*
@@ -30,38 +26,24 @@
         facebook: "gsx$facebook",
         service: "gsx$service",
         description: "gsx$description",
-        category: "gsx$category"
+        cat: "gsx$cat"
     };
-
-    /*Скрытие рекламных блоков*/
-    const reclam_containers = document.querySelector(".reclam-container").children;
-    for(let i =0; i<reclam_containers.length;i++){
-        reclam_containers[i].style.display = "none";
-		}
-
-    const RECLAM_BLOCKS_CATEGORIES_DEPENDECIES = [
-        {
-            node: reclam_containers[0],
-            dependencies: ["Фото", "Видео"]
-        }
-    ]
-
 
     /*Настраиваемые параметры для инстанса*/
     const ServicesConfig = {
-        url: "https://gist.githubusercontent.com/modecrywork/427f419e58130e9b91ad12eb167988cf/raw/82983608f09be778e8a16a3379f58cde53112db6/testdata",
+        url: "https://gist.githubusercontent.com/modecrywork/427f419e58130e9b91ad12eb167988cf/raw/9ae19d8ae655bc73d7c37244172eb3e132c85bd1/testdata",
         scheme: SERVICE_SCHEME,
         filtersSettings: {
             search: true,
-            fields: ["name", "service", "description", "category"],
-        },
-        marketBlocks: RECLAM_BLOCKS_CATEGORIES_DEPENDECIES
-    }
+            fields: ["name", "service", "description"],
+        }
+    };
+
     const rootSettings = {
-        services: ".services-container",
+        blockContent: ".services-container",
         categories: ".categories-container",
         search: ".search-container",
-    }
+    };
 
     const ServicesContent = new StructuredContent(ServicesConfig, rootSettings);
     ServicesContent.init(); // инициализируем контент

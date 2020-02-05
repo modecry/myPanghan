@@ -9,25 +9,49 @@ import {renderTemplate} from "services";
  */
 class BlockContent {
     constructor(root, {state, contentFields}) {
-        this.data = state.data; // установка дефолтного стейта
+        this.filtredState = state.data;
         this.root = root; // корневой элемент для рендера
         this.parentState = state; // родительский стейт
-        this.contentFields = contentFields; // нейминги полей
+        this.childrenNodes = [];
+        this.contentFields = contentFields; // нейминги полей для фильтрации
     }
 
     /**
      *  Метод применения фильтров и поиска
      */
     applyFilters = () => {
-        const {category, search} = this.parentState.filters;
+        const {categories} = this.parentState; // лист категорий
+        const {category, search} = this.parentState.filters; // значения фильтров
+        this.filtredState = this.parentState.data.map(({id}) => id); // мапим массив id's всеъ элементов
+
         if (category) {
-            this.data = filterData(category, this.parentState.data, ["category"]);
+            const cat = categories.find(({className}) => className === category); // находим значение категории
+            if (cat) {
+                this.filtredState = filterData(cat.name, this.parentState.data, ["cat"]).map(({id}) => id); // фильтруем массив id's
+            }
         }
+
         if (search) {
-            const withOutCategory = this.contentFields.filter(item=>item!=="category");
-            this.data = filterData(search, this.data, withOutCategory);
+            this.filtredState = filterData(search, this.parentState.data, this.contentFields).map(({id}) => id);
         }
+
+        this.toggleVisible(); // переключение видимости блоков
     };
+
+    /**
+     *  Скрывает/ Показывает блоки в зависимости от массива идентификаторов
+     */
+    toggleVisible = () => {
+        const {childrenNodes, filtredState} = this;
+        for (let i = 0; i < childrenNodes.length; i++) {
+            const attr = childrenNodes[i].getAttribute("data-id");
+            childrenNodes[i].classList.add("hidden");
+            if (filtredState.includes(parseInt(attr))) {
+                childrenNodes[i].classList.remove("hidden");
+            }
+        }
+    }
+
 
     /**
      *  Метод рендера 1 экземпляра блока с контентом
@@ -38,114 +62,59 @@ class BlockContent {
      * @param facebook - никнейм фейсбук
      * @param service - название услуги
      * @param description - заголовок услуги
+     * @param id - id для data атрибута
      * @returns {string} - строка с DOM элементом
      */
-    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description}) => {
+    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id}) => {
 
         // заголовок
-        const title = renderTemplate(service, `
-            <div class="t513__title t-heading t-heading_xs">
-               ${service}
-            </div>
-        `);
-
-        // имя
-        const constantName = renderTemplate(name, `
-            <div class="block-contacts-item">
-            <strong>Имя:</strong> ${name}
-            </div>
-        `);
+        const title = renderTemplate(service, `<div class="t513__title t-heading t-heading_xs">${service}</div>`);
 
         // whatsapp
-        const whatsApp = renderTemplate(whatsapp, `
-            <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a>
-        `);
+        const whatsApp = renderTemplate(whatsapp, `<a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a>`);
 
         // telegram
-        const telegrm = renderTemplate(telegram, `
-            <a href="tg://resolve?domain=${telegram}" target="_blank">Telegram</a>
-        `);
+        const telegrm = renderTemplate(telegram, `<a href="tg://resolve?domain=${telegram}" target="_blank">Telegram</a>`);
 
         // insta
-        const insta = renderTemplate(instagram, `
-            <a href="https://instagram.com/${instagram}" target="_blank">Instagram</a>
-        `);
+        const insta = renderTemplate(instagram, `<a href="https://instagram.com/${instagram}" target="_blank">Instagram</a>`);
 
         // facebook
-        const facebk = renderTemplate(facebook, `
-            <a href="https://www.facebook.com/${facebook}" target="_blank">Facebook</a>
-        `);
+        const facebk = renderTemplate(facebook, `<a href="https://www.facebook.com/${facebook}" target="_blank">Facebook</a>`);
 
-        // социальные сети
-        const socials = `
-            <div class="block-contacts-item">
-              <div class="socials">
-                <strong>Социальные сети: </strong>
-                ${whatsApp}
-                ${telegrm}
-                ${insta}
-                ${facebk}
-              </div>
-            </div>
-        `;
+        //  контакты
+        const contacts = renderTemplate(name, `<div class="content-block-contacts"><strong>${name}</strong>${whatsApp}${telegrm}${insta}${facebk}</div>`);
 
         // описание
-        const desc = renderTemplate(name, `
-            <div class="content-block-description">
-              ${description}
-            </div>
-        `);
+        const desc = renderTemplate(name, `<div class="content-block-description">${description}</div>`);
 
         // возвращаем темплейт
-        return `
-              <div class="content-block">
-                  ${title}
-                  <div class="content-block-title">Контакты</div>
-                  <div class="content-block-contacts">
-                    ${constantName}
-                    ${socials}
-                  </div>
-                  <div class="content-block-title">Описание:</div>
-                  ${desc}
-              </div>
-              `;
+        return `<div class="content-block" data-id="${id}">${title}${contacts}${desc}</div>`;
     }
 
     /**
      *  Рендер блоков на основе данных
      */
     renderBlocksContent = () => {
-        const {root, data, renderBlock} = this;
-        const services = data.map(service => renderBlock(service)); // мапим блоки по шаблону
-        // render блока
-        const hasBlockContainer = document.querySelector(".blocks");
-        const blocksContainer = document.createElement("div");
-        blocksContainer.classList.add("blocks");
-        blocksContainer.innerHTML = services.join("");
-        // проверка на существование блока
-        if (hasBlockContainer) {
-            root.replaceChild(blocksContainer, hasBlockContainer);
-        } else {
-            root.appendChild(blocksContainer);
-        }
-    }
+        const {root, parentState: {data}, renderBlock} = this;
+        const services = data.map(renderBlock); // мапим блоки по шаблонному методу
 
-    /**
-     * Ре-рендер блоков
-     * @returns {Promise<void>}
-     */
-    reRenderBlocks = async () => {
-        this.data = this.parentState.data;
-        await this.applyFilters();
-        this.renderBlocksContent();
+        // render блока
+        const blocksContainer = document.createElement("div");
+        blocksContainer.classList = "t-col t-col_10 t-prefix_1 t-text";
+        blocksContainer.innerHTML = services.join("");
+        root.appendChild(blocksContainer);
+
+        this.childrenNodes = blocksContainer.children; // сохраняем коллекцию дочерних элементов
+
     }
 
     /**
      *  Иницилизация блока
      */
     init = async () => {
-        await this.applyFilters();
         this.renderBlocksContent();
+        await this.applyFilters();
     }
 }
 
