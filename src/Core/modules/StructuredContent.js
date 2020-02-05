@@ -39,7 +39,7 @@ class StructuredContent {
      * Запрос на получение данных
      * @returns {Promise<void>}
      */
-    getIntitalData = async () => {
+    setIntitalData = async () => {
         const {url, scheme} = this.contentConfig;
         const {feed} = await getData(url); // запрашиваем данные
         this.contentState.data = constructData(feed.entry, scheme); // форматируем данные на основе схемы
@@ -102,7 +102,7 @@ class StructuredContent {
      * @returns {Promise<void>}
      */
     init = async () => {
-        await this.getIntitalData(); // установка исходных данных
+        await this.setIntitalData(); // установка исходных данных
         const {
             contentState,
             render,
