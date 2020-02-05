@@ -63,7 +63,6 @@ const baseConfig = {
    resolve:{
        alias: {
            core: path.resolve(__dirname, "core/"),
-           constants: path.resolve(__dirname, "core/constants/"),
            modules: path.resolve(__dirname, "core/modules/"),
            services: path.resolve(__dirname, "core/services/"),
            utils: path.resolve(__dirname, "core/utils/"),
