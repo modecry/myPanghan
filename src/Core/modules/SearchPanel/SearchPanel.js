@@ -48,7 +48,7 @@ class SearchPanel {
         `;
         // render  панели поиска
         const SearchContainer = document.createElement("div");
-        SearchContainer.classList = "search-panel inner_content";
+        SearchContainer.classList = "search-panel t-col t-col_10 t-prefix_1 t-text";
         SearchContainer.innerHTML = searchInner;
         root.appendChild(SearchContainer);
 

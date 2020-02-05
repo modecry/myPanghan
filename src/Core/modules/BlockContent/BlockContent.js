@@ -74,13 +74,6 @@ class BlockContent {
             </div>
         `);
 
-        // имя
-        const constantName = renderTemplate(name, `
-            <div class="block-contacts-item">
-            <strong>Имя:</strong> ${name}
-            </div>
-        `);
-
         // whatsapp
         const whatsApp = renderTemplate(whatsapp, `
             <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a>
@@ -101,18 +94,16 @@ class BlockContent {
             <a href="https://www.facebook.com/${facebook}" target="_blank">Facebook</a>
         `);
 
-        // социальные сети
-        const socials = `
-            <div class="block-contacts-item">
-              <div class="socials">
-                <strong>Социальные сети: </strong>
+        //  контакты
+        const constants = renderTemplate(name, `
+            <div class="content-block-contacts">
+              <strong>${name}</strong>
                 ${whatsApp}
                 ${telegrm}
                 ${insta}
                 ${facebk}
-              </div>
             </div>
-        `;
+        `);
 
         // описание
         const desc = renderTemplate(name, `
@@ -125,12 +116,7 @@ class BlockContent {
         return `
               <div class="content-block" data-id="${id}">
                   ${title}
-                  <div class="content-block-title">Контакты</div>
-                  <div class="content-block-contacts">
-                    ${constantName}
-                    ${socials}
-                  </div>
-                  <div class="content-block-title">Описание:</div>
+                  ${constants}
                   ${desc}
               </div>
               `;
@@ -145,7 +131,7 @@ class BlockContent {
 
         // render блока
         const blocksContainer = document.createElement("div");
-        blocksContainer.classList.add("blocks");
+        blocksContainer.classList = "t-col t-col_10 t-prefix_1 t-text";
         blocksContainer.innerHTML = services.join("");
         root.appendChild(blocksContainer);
 
