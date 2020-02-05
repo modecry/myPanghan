@@ -16,8 +16,8 @@ class SearchPanel {
      * @param value - значение поиска
      */
     setSearch = (value) => {
-        const {category} = this.parentState.filters;
-        this.methods.setFilters(category, value);
+        this.methods.setFilters("", value);
+        this.methods.clearCategories();
     }
 
     /**

@@ -109,11 +109,13 @@ class StructuredContent {
             contentFields
         } // параметры родителя для проброса в дочерние инстансы
 
-        // создание инстансов дочерних компонентов
+        // инстанс категорий
         this.categoriesInstance = new Categories(this.rootNodes.categories, parentParametrs);
+        // инстанс блока с контентом
         this.blockContentInstance = new BlockContent(this.rootNodes.services, parentParametrs);
 
         if (filtersSettings.search) {
+            parentParametrs.methods = {...parentParametrs.methods,clearCategories:this.categoriesInstance.clearCategories}; // снятие классов active со всех элементов категорий
             this.searchPanel = new SearchPanel(this.rootNodes.search, parentParametrs);
         }
 

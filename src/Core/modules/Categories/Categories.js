@@ -29,11 +29,10 @@ class Categories {
          * Коллбэк пробрасываемый в метод toggle
          */
         const callbackCategories = () => {
-            const {search} = this.parentState.filters;
             if (category.classList.value.includes("active")) {
                 setFilters(); // отчитска фильтра по категорям
             } else {
-                setFilters(currentAttr); // установка фильтра по категорям
+                setFilters(currentAttr,""); // установка фильтра по категорям
             }
         }
 
@@ -42,6 +41,16 @@ class Categories {
             currentAttr,
             attributeName
         }, "active", callbackCategories);
+    }
+
+    /**
+     *  сброс класса active
+     */
+    clearCategories = ()=>{
+        const {nodeListCategories} = this;
+        for (let i = 0; i<nodeListCategories.length; i++){
+            nodeListCategories[i].classList.remove("active");
+        }
     }
 
     /**
@@ -63,16 +72,13 @@ class Categories {
     renderCategories = () => {
         const {root, renderCategory} = this;
         const categories = this.categoriesList.map(category => renderCategory(category)); // мапим категории
-
-        // непосредственный рендер категорий в контейнер
-        root.innerHTML = `
-            ${root.innerHTML}
-            <div class="t-col t-col_10 t-prefix_1 t-text">            
+        const container = document.createElement("div");
+        container.classList = "t-col t-col_10 t-prefix_1 t-text";
+        container.innerHTML  = `        
                 <div id="mycategories" class="inner_content">
                     ${categories.join("")}
-                </div>
-            </div>
-        `;
+                </div>`;
+        root.appendChild(container);
 
         this.nodeListCategories = document.querySelectorAll(".catbtn"); // определяем  лист node
         this.nodeListCategories.forEach(category =>
