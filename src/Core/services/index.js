@@ -25,9 +25,10 @@ export const getData = async (url = "") => {
  * @returns {array}
  */
 export const constructData = (data, scheme) => {
-    return data.map(item => {
+    return data.map((item,index) => {
         const newObj = {};
-        Object.keys(scheme).forEach(propName => {
+        newObj["index"] = index;
+        Object.keys(scheme).forEach((propName) => {
             const schemeValueProp = scheme[propName];
             if (item.hasOwnProperty(schemeValueProp))
                 newObj[propName] = item[schemeValueProp].$t;
@@ -95,7 +96,6 @@ export function renderTemplate(content, template) {
  * @returns {{name: *, className: string}[]} - массив объектов данного вида
  */
 export function categoryCollector(array){
-    console.log(array);
     const cats = [...new Set(array.map(({cat})=>cat))];
     return cats.map((item,index)=>{
             return {

@@ -38,9 +38,10 @@ class BlockContent {
      * @param facebook - никнейм фейсбук
      * @param service - название услуги
      * @param description - заголовок услуги
+     * @param index - индекс для data атрибута
      * @returns {string} - строка с DOM элементом
      */
-    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description}) => {
+    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, index}) => {
 
         // заголовок
         const title = renderTemplate(service, `
@@ -98,7 +99,7 @@ class BlockContent {
 
         // возвращаем темплейт
         return `
-              <div class="content-block">
+              <div class="content-block" data-index="${index}">
                   ${title}
                   <div class="content-block-title">Контакты</div>
                   <div class="content-block-contacts">
