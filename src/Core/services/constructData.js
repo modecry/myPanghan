@@ -1,9 +1,9 @@
 import  dataFormater from "./dataFormater";
 /**
  * Сборщик данных  на основе схемы
- * @param data - данные
- * @param scheme - схема
- * @returns {array}
+ * @param {Array} data - данные
+ * @param {Object} scheme - схема
+ * @returns {Array} массив сформированных данных
  */
 const constructData = (data, scheme) => {
     return data.map((item, index) => {

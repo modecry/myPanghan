@@ -1,8 +1,7 @@
 /**
  * Сервис запроса  к данным
- * @param url - адрес запроса
- * @param data
- * @returns {Promise<any>}
+ * @param {String} url - адрес запроса
+ * @returns {(Promise<any>|null)}
  */
 const getData = async (url = "") => {
     try {

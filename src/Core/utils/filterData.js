@@ -1,9 +1,9 @@
 /**
  * Фильтр поиска
- * @param search - искомая строка
- * @param array - массив объектов по которому осуществляется поиск
- * @param fields - поля по которым нужно соуществить поиск
- * @returns {array} - возвращает отфильтрованный array
+ * @param {String} search - искомая строка
+ * @param {Array} array - массив объектов по которому осуществляется поиск
+ * @param {Array} fields - поля по которым нужно соуществить поиск
+ * @returns {Array} - возвращает отфильтрованный array
  */
 const filterData = (search, array, fields) =>
     array.filter(element => {

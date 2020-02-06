@@ -8,11 +8,11 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./src/webpack.config.js"
   },
   "author": "Alexandr Kudryashov",
-  "email" : "modecrywork@gmail.com",
+  "email": "modecrywork@gmail.com",
   "license": "ISC",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/modecry/myPanghan"
+    "type": "git",
+    "url": "https://github.com/modecry/myPanghan"
   },
   "devDependencies": {
     "@babel/core": "7.8.3",

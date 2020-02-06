@@ -1,9 +1,9 @@
 /**
  *  Функция toggle  для  элементов
- * @param nodeList - лист элеменов
- * @param currentId - текущий идентификатор
- * @param attributeName - атрибут по которому определяется элемент
- * @param selector - селектор для метода toggle
+ * @param {HTMLAllCollection} nodeList - лист элеменов
+ * @param {number} currentId - текущий идентификатор
+ * @param {String} attributeName - атрибут по которому определяется элемент
+ * @param {String} selector - селектор для метода toggle
  * @returns {Function}  - возвращаемая функция для работы с конкретном элементе
  */
 function toggleActive({nodeList, currentAttr, attributeName}, selector, callback) {

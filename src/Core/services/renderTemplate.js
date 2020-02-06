@@ -1,8 +1,8 @@
 /**
  * Функция рендера шаблона
- * @param content - передаваемое значение
- * @param template - шаблон
- * @returns {string} - строка с нодой шаблона
+ * @param {String} content - передаваемое значение
+ * @param {String} template - шаблон
+ * @returns {String} - строка с шаблонаом или пустая строка
  */
 const renderTemplate = (content, template) => {
     return content ? template : "";

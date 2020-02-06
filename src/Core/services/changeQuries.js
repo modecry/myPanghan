@@ -1,6 +1,7 @@
 /**
  *  Сервис для сохраниния данных в url и local storage
  * @param queries {array} - массив  объектов для сохраненения/изменения данных
+ * @return {Void}
  */
 const changeQuries = (queries) => {
     const pathName = window.location.pathname; // получаем текущий pathname

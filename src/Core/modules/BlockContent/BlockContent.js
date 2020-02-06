@@ -5,7 +5,12 @@ import {filterData} from "utils";
 import {renderTemplate} from "services";
 
 /**
- *  Класс реализущий вывод основных блоков с контентом на основе данных
+ *  @class BlockContent
+ *  @param {HTMLElement} root - нода для рендеринга
+ *  @param parentParams {Object} - параметры прокидываемые от родителя
+ *  @param parentParams.state {Object} - данные которые хранятся в родителе
+ *  @param parentParams.contentFields {Array} - поля покторым нужно делать фильтр
+ *  @classdesc Класс реализущий вывод основных блоков с контентом на основе данных
  */
 class BlockContent {
     constructor(root, {state, contentFields}) {
@@ -18,6 +23,7 @@ class BlockContent {
 
     /**
      *  Метод применения фильтров и поиска
+     *  @return {Void}
      */
     applyFilters = () => {
         const {categories} = this.parentState; // лист категорий
@@ -39,7 +45,8 @@ class BlockContent {
     };
 
     /**
-     *  Скрывает/ Показывает блоки в зависимости от массива идентификаторов
+     *  Скрывает / Показывает блоки в зависимости от массива идентификаторов
+     *  @return {Void}
      */
     toggleVisible = () => {
         const {childrenNodes, filtredState} = this;
@@ -54,18 +61,18 @@ class BlockContent {
 
 
     /**
-     *  Метод рендера 1 экземпляра блока с контентом
-     * @param name - имя
-     * @param whatsapp - никнейм ватсап
-     * @param telegram - никнейм телега
-     * @param instagram - никнейм инстаграм
-     * @param facebook - никнейм фейсбук
-     * @param service - название услуги
-     * @param description - заголовок услуги
-     * @param id - id для data атрибута
-     * @param cat - название категории
-     * @param cat - website
-     * @returns {string} - строка с DOM элементом
+     *  Метод рендера одного экземпляра блока с контентом
+     * @param {String} name - имя
+     * @param {String} whatsapp - никнейм ватсап
+     * @param {String} telegram - никнейм телега
+     * @param {String} instagram - никнейм инстаграм
+     * @param {String} facebook - никнейм фейсбук
+     * @param {String} service - название услуги
+     * @param {String} description - заголовок услуги
+     * @param {String} id - id для data атрибута
+     * @param {String} cat - название категории
+     * @param {String} cat - website
+     * @returns {String} - строка с DOM элементом
      */
     renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id, cat, site}) => {
         // заголовок
@@ -104,6 +111,7 @@ class BlockContent {
 
     /**
      *  Рендер блоков на основе данных
+     *  @return {Void}
      */
     renderBlocksContent = () => {
         const {root, parentState: {data}, renderBlock} = this;
@@ -121,6 +129,7 @@ class BlockContent {
 
     /**
      *  Иницилизация блока
+     *  @return {Promise<void>}
      */
     init = async () => {
         this.renderBlocksContent();
