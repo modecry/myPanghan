@@ -1,6 +1,11 @@
 import {toggleActive} from "utils";
 /**
- *  Класс для формирования категорий
+ *  @class Categories
+ *  @param {HTMLElement} root - нода для рендеринга
+ *  @param parentParams {Object} - параметры прокидываемые от родителя
+ *  @param parentParams.state {Object} - данные которые хранятся в родителе
+ *  @param parentParams.methods {Array} - методы для работы с
+ *  @classdesc Класс для формирования категорий
  */
 class Categories {
     constructor(root, {methods, state}) {

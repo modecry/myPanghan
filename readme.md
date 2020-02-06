@@ -2,7 +2,7 @@
 
 Для сборки модуля тербуется [node.js](https://nodejs.org "nidejs") (не меньше 13.7.0) 
 
-[Документация по компонентам](https://github.com/modecry/myPanghan/tree/master/docs "docs")
+[Описание компонентов](https://github.com/modecry/myPanghan/tree/master/docs "docs")
 
 **Иснтрукция по установке**
 1. Перейти в деррикторию `cd myPhangan/`

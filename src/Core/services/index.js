@@ -1,3 +1,6 @@
+/**
+ *  @module Services
+ */
 import dataFormater from "./dataFormater";
 import constructData from "./constructData";
 import getData from "./getData";
