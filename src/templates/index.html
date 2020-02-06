@@ -9,13 +9,14 @@
     <title>Document</title>
 </head>
 <body>
-
+<div class="loader">1</div>
 <div class="categories-container  t-rec_pt_0 t-rec_pb_15 t-container"></div>
 <div class="search-container  t-rec_pt_0 t-rec_pb_30 t-container"></div>
 <div class="services-container  t-rec_pt_0 t-rec_pb_30 t-container"></div>
 </body>
 <script>
-
+    const loader = document.querySelector(".loader");
+    const hideLoader = ()=>setTimeout(()=>loader.classList.add("hidden"),500);
     /*Cхема требуемых данных для рендера*/
     const SERVICE_SCHEME = {
         name: "gsx$name",
@@ -35,7 +36,10 @@
 
     /*Настраиваемые параметры для инстанса*/
     const ServicesConfig = {
-        servicesUrl,
+        contentFetch:{
+            url:servicesUrl,
+            callbackFetch: hideLoader,
+        },
         categoriesUrl,
         scheme: SERVICE_SCHEME,
         filtersSettings: {

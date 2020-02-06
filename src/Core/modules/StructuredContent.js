@@ -45,8 +45,10 @@ class StructuredContent {
      * @returns {Promise<void>}
      */
     setIntitalData = async () => {
-        const {servicesUrl, categoriesUrl, scheme} = this.contentConfig;
-        const {feed: servicesData} = await getData(servicesUrl); // запрашиваем данные сервисов
+        const {contentFetch, categoriesUrl, scheme} = this.contentConfig;
+        const {url:servicesUrl,callbackFetch} = contentFetch;
+
+        const {feed: servicesData} = await getData(servicesUrl,callbackFetch); // запрашиваем данные сервисов
         const {feed: categoriesData} = await getData(categoriesUrl);
 
         this.contentState.categories = constructData(categoriesData.entry, { // категории
