@@ -41,12 +41,20 @@ class StructuredContent {
      */
     setIntitalData = async () => {
         const {servicesUrl, categoriesUrl, scheme} = this.contentConfig;
-        const {feed:servicesData} = await getData(servicesUrl); // запрашиваем данные сервисов
-        const {feed:categoriesData} = await  getData(categoriesUrl);
-        this.contentState.categories = constructData(categoriesData.entry,{
+        const {feed: servicesData} = await getData(servicesUrl); // запрашиваем данные сервисов
+        const {feed: categoriesData} = await getData(categoriesUrl);
+
+        this.contentState.categories = constructData(categoriesData.entry, { // категории
             name: "gsx$cat",
             image: "gsx$img"
-        }); // категории
+        }).sort(({name: a}, {name: b}) => { // сортировка категорий по алфавиту
+            a = a.toLowerCase();
+            b = b.toLowerCase();
+            if (a < b) return -1;
+            if (a > b) return 1;
+            return 0;
+        });
+
         this.contentState.data = constructData(servicesData.entry, scheme); // форматируем данные на основе схемы
         this.setQueryFilters(); // устанавливаем исходные фильтры
     }
