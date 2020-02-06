@@ -64,12 +64,12 @@ class BlockContent {
      * @param description - заголовок услуги
      * @param id - id для data атрибута
      * @param cat - название категории
+     * @param cat - website
      * @returns {string} - строка с DOM элементом
      */
-    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id, cat}) => {
+    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id, cat, site}) => {
         // заголовок
         const title = renderTemplate(service, `<div class="t513__title t-heading t-heading_xs">${service}</div>`);
-
         // картинка с категорией
         const defaultCategory = this.parentState.categories.find(({name})=>name==="default")?.image;
         const targetCategory =  this.parentState.categories.find(({name})=>name===cat)?.image;
@@ -89,8 +89,11 @@ class BlockContent {
         // facebook
         const facebk = renderTemplate(facebook, `<a href="https://www.facebook.com/${facebook}" target="_blank">Facebook</a>`);
 
+        // web-site
+        const webSite = renderTemplate(site, `<a href="http://${site}" target="_blank">Веб-сайт</a>`);
+
         //  контакты
-        const contacts = renderTemplate(name, `<div class="content-block-contacts"><span class="person-name">${name}</span>${whatsApp}${telegrm}${insta}${facebk}</div>`);
+        const contacts = renderTemplate(name, `<div class="content-block-contacts"><span class="person-name">${name}</span>${whatsApp}${telegrm}${insta}${facebk}${webSite}</div>`);
 
         // описание
         const desc = renderTemplate(name, `<div class="content-block-description">${description}</div>`);
