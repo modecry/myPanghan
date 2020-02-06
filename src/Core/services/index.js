@@ -89,18 +89,3 @@ export const dataFormater = obj => {
 export function renderTemplate(content, template) {
     return content ? template : "";
 }
-
-/**
- * Коллекционирует категории
- * @param array - передаваемый объект
- * @returns {{name: *, className: string}[]} - массив объектов данного вида
- */
-export function categoryCollector(array){
-    const cats = [...new Set(array.map(({cat})=>cat))];
-    return cats.map((item,index)=>{
-            return {
-                name: item,
-                className: `index-${index}`
-            }
-    })
-};

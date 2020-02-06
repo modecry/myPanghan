@@ -40,10 +40,14 @@ class StructuredContent {
      * @returns {Promise<void>}
      */
     setIntitalData = async () => {
-        const {url, scheme} = this.contentConfig;
-        const {feed} = await getData(url); // запрашиваем данные
-        this.contentState.data = constructData(feed.entry, scheme); // форматируем данные на основе схемы
-        this.contentState.categories = categoryCollector(this.contentState.data); // собираем категории
+        const {servicesUrl, categoriesUrl, scheme} = this.contentConfig;
+        const {feed:servicesData} = await getData(servicesUrl); // запрашиваем данные сервисов
+        const {feed:categoriesData} = await  getData(categoriesUrl);
+        this.contentState.categories = constructData(categoriesData.entry,{
+            name: "gsx$cat",
+            image: "gsx$img"
+        }); // категории
+        this.contentState.data = constructData(servicesData.entry, scheme); // форматируем данные на основе схемы
         this.setQueryFilters(); // устанавливаем исходные фильтры
     }
 

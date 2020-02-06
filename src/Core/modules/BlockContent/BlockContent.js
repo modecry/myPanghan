@@ -25,7 +25,7 @@ class BlockContent {
         this.filtredState = this.parentState.data.map(({id}) => id); // мапим массив id's всеъ элементов
 
         if (category) {
-            const cat = categories.find(({className}) => className === category); // находим значение категории
+            const cat = categories.find(({name}) => name === category); // находим значение категории
             if (cat) {
                 this.filtredState = filterData(cat.name, this.parentState.data, ["cat"]).map(({id}) => id); // фильтруем массив id's
             }
