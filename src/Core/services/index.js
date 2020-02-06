@@ -1,3 +1,6 @@
+/**
+ *  @module Вспомогательные сервисы
+ */
 import dataFormater from "./dataFormater";
 import constructData from "./constructData";
 import getData from "./getData";

@@ -4,6 +4,7 @@ import  dataFormater from "./dataFormater";
  * @param {Array} data - данные
  * @param {Object} scheme - схема
  * @returns {Array} массив сформированных данных
+ * @memberof module:Вспомогательные сервисы
  */
 const constructData = (data, scheme) => {
     return data.map((item, index) => {

@@ -2,6 +2,7 @@
  *  Сервис для сохраниния данных в url и local storage
  * @param queries {array} - массив  объектов для сохраненения/изменения данных
  * @return {Void}
+ * @memberof module:Вспомогательные сервисы
  */
 const changeQuries = (queries) => {
     const pathName = window.location.pathname; // получаем текущий pathname
@@ -30,6 +31,7 @@ const changeQuries = (queries) => {
  * @param name  - ключ
  * @param value - значение
  * @returns {string} - строка с преобразованными данными
+ * @memberof module:Вспомогательные сервисы
  */
 const saveQuery = ({name, value}) => {
     const urlPart = `${name}=${value}`;
@@ -41,6 +43,7 @@ const saveQuery = ({name, value}) => {
  *  Функция для удаления параметров из localStorage  и преобразования
  * @param name - ключ
  * @returns {string} - возвращает пустую строку
+ * @memberof module:Вспомогательные сервисы
  */
 const deleteQuery = ({name}) => {
     localStorage.removeItem(name);

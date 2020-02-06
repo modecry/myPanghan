@@ -2,6 +2,7 @@
  * Сервис запроса  к данным
  * @param {String} url - адрес запроса
  * @returns {(Promise<any>|null)}
+ * @memberof module:Вспомогательные сервисы
  */
 const getData = async (url = "") => {
     try {
