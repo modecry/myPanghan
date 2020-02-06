@@ -4,7 +4,7 @@
  * @param {Array} array - массив объектов по которому осуществляется поиск
  * @param {Array} fields - поля по которым нужно соуществить поиск
  * @returns {Array} - возвращает отфильтрованный array
- * @memberof module:Утилиты
+ * @memberof module:Utils
  */
 const filterData = (search, array, fields) =>
     array.filter(element => {

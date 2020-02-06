@@ -5,7 +5,7 @@
  * @param {String} attributeName - атрибут по которому определяется элемент
  * @param {String} selector - селектор для метода toggle
  * @returns {Function}  - возвращаемая функция для работы с конкретном элементе
- * @memberof module:Утилиты
+ * @memberof module:Utils
  */
 function toggleActive({nodeList, currentAttr, attributeName}, selector, callback) {
     return function () {

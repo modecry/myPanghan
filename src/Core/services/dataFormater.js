@@ -2,7 +2,7 @@
  *  Форматирование свойств объекта
  * @param {Object} obj  - объект с определенными свойствами
  * @returns {Object} отформатированный объект
- * @memberof module:Вспомогательные сервисы
+ * @memberof module:Services
  */
 const dataFormater = obj => {
     const newObj = {};

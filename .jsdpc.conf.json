@@ -2,6 +2,7 @@
   "plugins": [],
   "recurseDepth": 10,
   "opts": {
+    "template": "node_modules/docdash",
     "recurse": true,
     "destination": "./docs/"
   },

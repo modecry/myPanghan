@@ -1,5 +1,5 @@
 /**
- *  @module Вспомогательные сервисы
+ *  @module Services
  */
 import dataFormater from "./dataFormater";
 import constructData from "./constructData";
