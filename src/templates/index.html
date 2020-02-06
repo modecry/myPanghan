@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-	<link rel="stylesheet" href="index.css"/>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<title>Document</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="stylesheet" href="index.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
 </head>
 <body>
 
@@ -15,9 +15,8 @@
 <div class="services-container  t-rec_pt_0 t-rec_pb_30 t-container"></div>
 </body>
 <script>
-    /*
-		 *  Cхема требуемых данных для рендера
-		 */
+
+    /*Cхема требуемых данных для рендера*/
     const SERVICE_SCHEME = {
         name: "gsx$name",
         whatsapp: "gsx$whatsapp",
@@ -26,12 +25,18 @@
         facebook: "gsx$facebook",
         service: "gsx$service",
         description: "gsx$description",
-        cat: "gsx$cat"
+        cat: "gsx$cat",
+        site: "gsx$site"
     };
+
+    const servicesUrl =
+      "https://gist.githubusercontent.com/modecrywork/427f419e58130e9b91ad12eb167988cf/raw/ed7c814e7065fdb4158d128e75151a5f112a5646/testdata";
+    const categoriesUrl = "https://gist.githubusercontent.com/modecrywork/bc8308ffd20dbc5a74f878079237ea90/raw/8168ddd1d453042852d74969669d9efb8ef36162/gistfile1.txt";
 
     /*Настраиваемые параметры для инстанса*/
     const ServicesConfig = {
-        url: "https://gist.githubusercontent.com/modecrywork/427f419e58130e9b91ad12eb167988cf/raw/9ae19d8ae655bc73d7c37244172eb3e132c85bd1/testdata",
+        servicesUrl,
+        categoriesUrl,
         scheme: SERVICE_SCHEME,
         filtersSettings: {
             search: true,
