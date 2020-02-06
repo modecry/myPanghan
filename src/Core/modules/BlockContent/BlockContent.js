@@ -99,7 +99,7 @@ class BlockContent {
         const desc = renderTemplate(name, `<div class="content-block-description">${description}</div>`);
 
         // возвращаем темплейт
-        return `<div class="content-block" data-id="${id}">${title}${categoryImage}${contacts}${desc}</div>`;
+        return `<div class="content-block" data-id="${id}">${title}<div class="content-block-inner">${categoryImage}<div>${contacts}${desc}</div></div></div>`;
     }
 
     /**
