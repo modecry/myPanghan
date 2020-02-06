@@ -90,7 +90,7 @@ class BlockContent {
         const facebk = renderTemplate(facebook, `<a href="https://www.facebook.com/${facebook}" target="_blank">Facebook</a>`);
 
         //  контакты
-        const contacts = renderTemplate(name, `<div class="content-block-contacts"><span>${name}</span>${whatsApp}${telegrm}${insta}${facebk}</div>`);
+        const contacts = renderTemplate(name, `<div class="content-block-contacts"><span class="person-name">${name}</span>${whatsApp}${telegrm}${insta}${facebk}</div>`);
 
         // описание
         const desc = renderTemplate(name, `<div class="content-block-description">${description}</div>`);
