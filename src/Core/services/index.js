@@ -25,7 +25,7 @@ export const getData = async (url = "") => {
  * @returns {array}
  */
 export const constructData = (data, scheme) => {
-    return data.map((item,index) => {
+    return data.map((item, index) => {
         const newObj = {};
         newObj["id"] = index;
         Object.keys(scheme).forEach((propName) => {
@@ -73,6 +73,10 @@ export const dataFormater = obj => {
                 value = value.replace(/^(\+?\d+)/g, '');
                 value = value.match(/([a-z_][a-z_.0-9]+)/g);
                 value = value && value[value.length - 1];
+                break;
+            case "site":
+                if (!value) break;
+                value = value.includes("http") ? value : `http://${value}`;
                 break;
         }
         newObj[key] = value;
