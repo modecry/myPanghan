@@ -1,4 +1,4 @@
-import {toggleAcive} from "utils";
+import {toggleActive} from "utils";
 /**
  *  Класс для формирования категорий
  */
@@ -36,7 +36,7 @@ class Categories {
             }
         }
 
-        return toggleAcive({
+        return toggleActive({
             nodeList: this.nodeListCategories,
             currentAttr,
             attributeName
