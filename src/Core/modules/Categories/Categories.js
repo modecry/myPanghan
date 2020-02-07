@@ -1,6 +1,11 @@
-import {toggleAcive} from "utils";
+import {toggleActive} from "utils";
 /**
- *  Класс для формирования категорий
+ *  @class Categories
+ *  @param {HTMLElement} root - нода для рендеринга
+ *  @param parentParams {Object} - параметры прокидываемые от родителя
+ *  @param parentParams.state {Object} - данные которые хранятся в родителе
+ *  @param parentParams.methods {Array} - методы для работы с
+ *  @classdesc Класс для формирования категорий
  */
 class Categories {
     constructor(root, {methods, state}) {
@@ -36,7 +41,7 @@ class Categories {
             }
         }
 
-        return toggleAcive({
+        return toggleActive({
             nodeList: this.nodeListCategories,
             currentAttr,
             attributeName
@@ -59,9 +64,10 @@ class Categories {
      * @param attr - [name] атрибут ноды
      * @returns {string} - Строка с нодой
      */
-    renderCategory = ({name: text, className}) => {
-        const active = this.parentState.filters.category  === className?"active":"";
-        return `<div class="catbtn ${active} ${className}" name="${className}">${text}</div>`;
+    renderCategory = ({name: text, id}) => {
+        if(text==="default") return; // убираем дефолтную категорию
+        const active = this.parentState.filters.category  === text? "active":"";
+        return `<div class="catbtn ${active} category-${id}" name="${text}">${text}</div>`;
     };
 
     /**

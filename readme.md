@@ -2,7 +2,7 @@
 
 Для сборки модуля тербуется [node.js](https://nodejs.org "nidejs") (не меньше 13.7.0) 
 
-[Документация по компонентам](https://github.com/modecry/myPanghan/tree/master/docs "docs")
+[Описание компонентов](https://github.com/modecry/myPanghan/tree/master/docs "docs")
 
 **Иснтрукция по установке**
 1. Перейти в деррикторию `cd myPhangan/`
@@ -21,38 +21,41 @@
 **Пример использлования**
 
 Параметры инциилизации
- 
-    const SERVICE_SCHEME = {
-        name: "gsx$name",
-        whatsapp: "gsx$whatsapp",
-        telegram: "gsx$telegram",
-        instagram: "gsx$telegram",
-        facebook: "gsx$facebook",
-        service: "gsx$service",
-        description: "gsx$description",
-        cat: "gsx$cat"
-    };
-    
-     const rootSettings = {
-        blockContent: ".services-container",
-        categories: ".categories-container",
-        search: ".search-container",
-     };
-    const url = "http://someurl.fetch/";
-    
-     
-    const ServicesConfig = {
-        url: url,
-        scheme: SERVICE_SCHEME,
-        filtersSettings: {
-            search: true,
-            fields: ["name", "service", "description"],
-        }
-    };
+            
+            var servicesUrl ="http://some.url";
+            var categoriesUrl = "http://categories.url/"
+            
+            var SERVICE_SCHEME = {
+                name: "gsx$name",
+                whatsapp: "gsx$whatsapp",
+                telegram: "gsx$telegram",
+                instagram: "gsx$telegram",
+                facebook: "gsx$facebook",
+                service: "gsx$service",
+                description: "gsx$description",
+                cat: "gsx$cat",
+                site: "gsx$site"
+            };
+
+            var ServicesConfig = {
+                servicesUrl,
+                categoriesUrl,
+                scheme: SERVICE_SCHEME,
+                filtersSettings: {
+                    search: true,
+                    fields: ["name", "service", "description"],
+                }
+            };
+
+            var rootSettings = {
+                blockContent: ".services-container",
+                categories: ".categories-container",
+                search: ".search-container",
+            };
 
 Иницилизация
 
-    const ServicesContent = new StructuredContent(ServicesConfig, rootSettings);
+    var ServicesContent = new StructuredContent(ServicesConfig, rootSettings);
     ServicesContent.init(); // инициализируем контент
 
 **Структура проекта**

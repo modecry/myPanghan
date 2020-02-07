@@ -1,0 +1,27 @@
+{
+  "plugins": [],
+  "recurseDepth": 10,
+  "opts": {
+    "template": "node_modules/docdash",
+    "recurse": true,
+    "destination": "./docs/",
+    "encoding": "utf8",
+    "destination": "docs/",
+    "recurse": true,
+    "verbose": true
+  },
+  "source": {
+    "include": ["src/Core/","./docsReadme.md"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "node_modules"
+  },
+  "sourceType": "module",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  }
+}
