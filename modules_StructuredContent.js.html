@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>modules/StructuredContent.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BlockContent.html">BlockContent</a></li><li><a href="Categories.html">Categories</a><ul class='methods'><li data-type='method'><a href="Categories.html#toggle">toggle</a></li></ul></li><li><a href="SearchPanel.html">SearchPanel</a></li><li><a href="StructuredContent.html">StructuredContent</a></li></ul><h3>Modules</h3><ul><li><a href="module-Services.html">Services</a><ul class='methods'><li data-type='method'><a href="module-Services.html#.changeQuries">changeQuries</a></li><li data-type='method'><a href="module-Services.html#.constructData">constructData</a></li><li data-type='method'><a href="module-Services.html#.dataFormater">dataFormater</a></li><li data-type='method'><a href="module-Services.html#.deleteQuery">deleteQuery</a></li><li data-type='method'><a href="module-Services.html#.getData">getData</a></li><li data-type='method'><a href="module-Services.html#.renderTemplate">renderTemplate</a></li><li data-type='method'><a href="module-Services.html#.saveQuery">saveQuery</a></li></ul></li><li><a href="module-Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="module-Utils.html#.filterData">filterData</a></li><li data-type='method'><a href="module-Utils.html#.toggleActive">toggleActive</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">modules/StructuredContent.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// services
+import {getData, constructData, categoryCollector} from "services";
+import changeQuries from "services/changeQuries"
+// submodules
+import BlockContent from "./BlockContent/BlockContent";
+import Categories from "./Categories/Categories";
+import SearchPanel from "./SearchPanel/SearchPanel";
+
+/**
+ *  @class StructuredContent
+ *  @param {Object} contentConfig - основной объект для конифигурации рбаоты
+ *  @param {Object} rootSettings - настройке для node элементов куда будет рендерится контент
+ *  @classdesc Основной класс релизующий общую логику и управляющий  отдельными частями модуля
+ */
+class StructuredContent {
+    constructor(contentConfig, rootSettings) {
+        this.contentConfig = contentConfig; // основная конфигурация
+        this.contentState = {
+            filters: {
+                search: "", // значение поиска
+                category: "" // значение категории
+            },
+            data: [], // массив данных
+            categories: [] // список категорий
+        } // базовый стейт
+        this.rootNodes = {}; // корневые node  элементы
+        this.getRootNodes(rootSettings); // получаем корневые node  элементы
+    }
+
+    /**
+     * Получаем ноды для рендеринга
+     * @param {Object} roots - объект с классами
+     * @return {Void}
+     */
+    getRootNodes = (roots) => {
+        for (let key in roots) {
+            const val = roots[key];
+            this.rootNodes[key] = document.querySelector(val);
+        }
+    }
+
+    /**
+     * Запрос на получение данных
+     * @async
+     * @returns {Promise&lt;void>}
+     */
+    setIntitalData = async () => {
+        const {contentFetch, categoriesUrl, scheme} = this.contentConfig;
+        const {url:servicesUrl,callbackFetch} = contentFetch;
+
+        const {feed: servicesData} = await getData(servicesUrl,callbackFetch); // запрашиваем данные сервисов
+        const {feed: categoriesData} = await getData(categoriesUrl);
+
+        this.contentState.categories = constructData(categoriesData.entry, { // категории
+            name: "gsx$cat",
+            image: "gsx$img"
+        }).sort(({name: a}, {name: b}) => { // сортировка категорий по алфавиту
+            a = a.toLowerCase();
+            b = b.toLowerCase();
+            if (a &lt; b) return -1;
+            if (a > b) return 1;
+            return 0;
+        });
+
+        this.contentState.data = constructData(servicesData.entry, scheme); // форматируем данные на основе схемы
+        this.setQueryFilters(); // устанавливаем исходные фильтры
+    }
+
+    /**
+     *  Установка  фильтров из url  и localStorage
+     *  @return {Void}
+     */
+    setQueryFilters = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // GET  параметры
+        const queryCategory = urlParams.get("category");
+        const querySearch = urlParams.get("search");
+
+        if (queryCategory || querySearch) {
+            this.setFilters(queryCategory, querySearch);
+        } else {
+            this.setFilters(localStorage["category"]);
+        }
+    }
+
+    /**
+     * Метод установки фильтров и поиска
+     * @param {String} category - требуемая категория
+     * @param {String} search - строка с поиском
+     */
+    setFilters = (category = "", search = "") => {
+        const {blockContentInstance} = this;
+        // значение фильтров
+        const categoryValue = category ? category : "";
+        const searchValue = search ? search : "";
+
+        const quires = [{name: "category", value: categoryValue}, {name: "search", value: searchValue},];
+
+        this.contentState.filters = {search: searchValue, category: categoryValue};// устанавливаем фильтры
+        changeQuries(quires); // сохранение фильтров в url и  localStorage
+
+        if (blockContentInstance) blockContentInstance.applyFilters(); // применяем фильтры
+
+    }
+
+    /**
+     *  Метод рендеринга вызывает иницилизвцию вложенных инстансов
+     *  @return {void}
+     */
+    render = () => {
+        const {categoriesInstance, blockContentInstance, contentConfig: {filtersSettings}} = this;
+        /// иницилизация инстансов
+        categoriesInstance.init();
+        blockContentInstance.init();
+        if (filtersSettings.search) {
+            this.searchPanel.init();
+        }
+    }
+
+    /**
+     *  Иницилизация модуля
+     * @async
+     * @returns {Promise&lt;void>}
+     */
+    init = async () => {
+        await this.setIntitalData(); // установка исходных данных
+        const {
+            contentState,
+            render,
+            setFilters,
+            rootNodes: {categories, blockContent, search},
+            contentConfig: {filtersSettings}
+        } = this;
+
+        const parentParametrs = {
+            state: contentState, // стейт
+            contentFields: filtersSettings.fields, // нейминги для поиска
+            methods: {setFilters},
+        } // параметры родителя для проброса в дочерние инстансы
+
+        /*Объявление инстансов*/
+        this.categoriesInstance = new Categories(categories, parentParametrs);
+        this.blockContentInstance = new BlockContent(blockContent, parentParametrs);
+
+        // проверка на существование панели поиска
+        if (filtersSettings.search) {
+            parentParametrs.methods = {
+                ...parentParametrs.methods,
+                clearCategories: this.categoriesInstance.clearCategories // снятие классов active со всех категорий
+            };
+
+            this.searchPanel = new SearchPanel(search, parentParametrs);
+        }
+
+        // непосредственный рендеринг
+        render();
+    }
+}
+
+export default StructuredContent;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Fri Feb 07 2020 16:09:03 GMT+0300 (MSK) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

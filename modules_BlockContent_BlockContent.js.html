@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>modules/BlockContent/BlockContent.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BlockContent.html">BlockContent</a></li><li><a href="Categories.html">Categories</a><ul class='methods'><li data-type='method'><a href="Categories.html#toggle">toggle</a></li></ul></li><li><a href="SearchPanel.html">SearchPanel</a></li><li><a href="StructuredContent.html">StructuredContent</a></li></ul><h3>Modules</h3><ul><li><a href="module-Services.html">Services</a><ul class='methods'><li data-type='method'><a href="module-Services.html#.changeQuries">changeQuries</a></li><li data-type='method'><a href="module-Services.html#.constructData">constructData</a></li><li data-type='method'><a href="module-Services.html#.dataFormater">dataFormater</a></li><li data-type='method'><a href="module-Services.html#.deleteQuery">deleteQuery</a></li><li data-type='method'><a href="module-Services.html#.getData">getData</a></li><li data-type='method'><a href="module-Services.html#.renderTemplate">renderTemplate</a></li><li data-type='method'><a href="module-Services.html#.saveQuery">saveQuery</a></li></ul></li><li><a href="module-Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="module-Utils.html#.filterData">filterData</a></li><li data-type='method'><a href="module-Utils.html#.toggleActive">toggleActive</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">modules/BlockContent/BlockContent.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// utils
+import {filterData} from "utils";
+
+// services
+import {renderTemplate} from "services";
+
+/**
+ *  @class BlockContent
+ *  @param {HTMLElement} root - нода для рендеринга
+ *  @param parentParams {Object} - параметры прокидываемые от родителя
+ *  @param parentParams.state {Object} - данные которые хранятся в родителе
+ *  @param parentParams.contentFields {Array} - поля покторым нужно делать фильтр
+ *  @classdesc Класс реализущий вывод основных блоков с контентом на основе данных
+ */
+class BlockContent {
+    constructor(root, {state, contentFields}) {
+        this.filtredState = state.data;
+        this.root = root; // корневой элемент для рендера
+        this.parentState = state; // родительский стейт
+        this.childrenNodes = [];
+        this.contentFields = contentFields; // нейминги полей для фильтрации
+    }
+
+    /**
+     *  Метод применения фильтров и поиска
+     *  @return {Void}
+     */
+    applyFilters = () => {
+        const {categories} = this.parentState; // лист категорий
+        const {category, search} = this.parentState.filters; // значения фильтров
+        this.filtredState = this.parentState.data.map(({id}) => id); // мапим массив id's всеъ элементов
+
+        if (category) {
+            const cat = categories.find(({name}) => name === category); // находим значение категории
+            if (cat) {
+                this.filtredState = filterData(cat.name, this.parentState.data, ["cat"]).map(({id}) => id); // фильтруем массив id's
+            }
+        }
+
+        if (search) {
+            this.filtredState = filterData(search, this.parentState.data, this.contentFields).map(({id}) => id);
+        }
+
+        this.toggleVisible(); // переключение видимости блоков
+    };
+
+    /**
+     *  Скрывает / Показывает блоки в зависимости от массива идентификаторов
+     *  @return {Void}
+     */
+    toggleVisible = () => {
+        const {childrenNodes, filtredState} = this;
+        for (let i = 0; i &lt; childrenNodes.length; i++) {
+            const attr = childrenNodes[i].getAttribute("data-id");
+            childrenNodes[i].classList.add("hidden");
+            if (filtredState.includes(parseInt(attr))) {
+                childrenNodes[i].classList.remove("hidden");
+            }
+        }
+    }
+
+
+    /**
+     *  Метод рендера одного экземпляра блока с контентом
+     * @param {String} name - имя
+     * @param {String} whatsapp - никнейм ватсап
+     * @param {String} telegram - никнейм телега
+     * @param {String} instagram - никнейм инстаграм
+     * @param {String} facebook - никнейм фейсбук
+     * @param {String} service - название услуги
+     * @param {String} description - заголовок услуги
+     * @param {String} id - id для data атрибута
+     * @param {String} cat - название категории
+     * @param {String} cat - website
+     * @returns {String} - строка с DOM элементом
+     */
+    renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id, cat, site}) => {
+        console.log(instagram);
+        // заголовок
+        const title = renderTemplate(service, `&lt;div class="t513__title t-heading t-heading_xs">${service}&lt;/div>`);
+        // картинка с категорией
+        const defaultCategory = this.parentState.categories.find(({name})=>name==="default")?.image;
+        const targetCategory =  this.parentState.categories.find(({name})=>name===cat)?.image;
+        const targetCategoryImageUrl = targetCategory || defaultCategory; // урл для отображения картинки
+
+        const categoryImage = renderTemplate(targetCategoryImageUrl,`&lt;div class="content-block-image">&lt;img src="${targetCategoryImageUrl}">&lt;/div>`)
+
+        // whatsapp
+        const whatsApp = renderTemplate(whatsapp, `&lt;a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp&lt;/a>`);
+
+        // telegram
+        const telegrm = renderTemplate(telegram, `&lt;a href="tg://resolve?domain=${telegram}" target="_blank">Telegram&lt;/a>`);
+
+        // insta
+        const insta = renderTemplate(instagram, `&lt;a href="https://instagram.com/${instagram}" target="_blank">Instagram&lt;/a>`);
+
+        // facebook
+        const facebk = renderTemplate(facebook, `&lt;a href="${facebook}" target="_blank">Facebook&lt;/a>`);
+
+        // web-site
+        const webSite = renderTemplate(site, `&lt;a href="${site}" target="_blank">Веб-сайт&lt;/a>`);
+
+        //  контакты
+        const contacts = renderTemplate(name, `&lt;div class="content-block-contacts">&lt;span class="person-name">${name}&lt;/span>${whatsApp}${telegrm}${insta}${facebk}${webSite}&lt;/div>`);
+
+        // описание
+        const desc = renderTemplate(name, `&lt;div class="content-block-description">${description}&lt;/div>`);
+
+        // возвращаем темплейт
+        return `&lt;div class="content-block" data-id="${id}">${title}&lt;div class="content-block-inner">${categoryImage}&lt;div>${contacts}${desc}&lt;/div>&lt;/div>&lt;/div>`;
+    }
+
+    /**
+     *  Рендер блоков на основе данных
+     *  @return {Void}
+     */
+    renderBlocksContent = () => {
+        const {root, parentState: {data}, renderBlock} = this;
+        const services = data.map(renderBlock); // мапим блоки по шаблонному методу
+
+        // render блока
+        const blocksContainer = document.createElement("div");
+        blocksContainer.classList = "t-col t-col_10 t-prefix_1 t-text";
+        blocksContainer.innerHTML = services.join("");
+        root.appendChild(blocksContainer);
+
+        this.childrenNodes = blocksContainer.children; // сохраняем коллекцию дочерних элементов
+
+    }
+
+    /**
+     *  Иницилизация блока
+     *  @return {Promise&lt;void>}
+     */
+    init = async () => {
+        this.renderBlocksContent();
+        await this.applyFilters();
+    }
+}
+
+export default BlockContent;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Fri Feb 07 2020 16:09:03 GMT+0300 (MSK) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
