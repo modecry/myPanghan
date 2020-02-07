@@ -3,7 +3,24 @@
 /*
   Вверху стили тильды
 */
-/*categories*/
+
+/* advertisement */
+.t774__textwrapper::after {
+  content: "реклама";
+  font-size: 10px;
+  color: #607d8b;
+  opacity: 0.7;
+  right: 8px;
+  bottom: 5px;
+  position: absolute;
+}
+
+/* loader */
+.loader {
+  text-align: center;
+}
+
+/* categories */
 .catbtn {
   display: block;
   padding: 5px 10px 5px 10px;
@@ -38,7 +55,7 @@
 .content-block-image {
   width: 100%;
   max-width: 60px;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 .content-block-image img {
   max-width: 100%;
@@ -47,7 +64,7 @@
 .content-block-contacts {
   display: inline-flex;
   flex-wrap: wrap;
-  padding: 5px 0 5px 0;
+  padding-bottom: 5px;
 }
 
 .content-block {
@@ -66,7 +83,7 @@
 .content-block-contacts a {
   color: #607d8b !important;
   font-weight: 700;
-  margin-right: 5px;
+  margin-right: 8px;
   margin-bottom: 5px;
   border-bottom: 1px solid #f6c448;
   box-shadow: inset 0px -1px 0px 0px #f6c448;
@@ -78,6 +95,7 @@
 
 .content-block-description {
   padding-top: 5px;
+  white-space: pre-line;
 }
 span.person-name {
   margin-right: 5px;
@@ -103,12 +121,14 @@ span.person-name {
   height: 30px;
   border-radius: 5px 0 0 5px;
   outline: none;
-  font-size: 14px;
-  color: #9DBFAF;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 500;
+  color: #37474f80;
 }
 
 .searchTerm:focus{
-  color: #607d8b;
+  color: #37474f;
 }
 
 .searchButton {

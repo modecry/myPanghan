@@ -75,6 +75,7 @@ class BlockContent {
      * @returns {String} - строка с DOM элементом
      */
     renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id, cat, site}) => {
+        console.log(instagram);
         // заголовок
         const title = renderTemplate(service, `<div class="t513__title t-heading t-heading_xs">${service}</div>`);
         // картинка с категорией
@@ -94,7 +95,7 @@ class BlockContent {
         const insta = renderTemplate(instagram, `<a href="https://instagram.com/${instagram}" target="_blank">Instagram</a>`);
 
         // facebook
-        const facebk = renderTemplate(facebook, `<a href="https://www.facebook.com/${facebook}" target="_blank">Facebook</a>`);
+        const facebk = renderTemplate(facebook, `<a href="${facebook}" target="_blank">Facebook</a>`);
 
         // web-site
         const webSite = renderTemplate(site, `<a href="${site}" target="_blank">Веб-сайт</a>`);
