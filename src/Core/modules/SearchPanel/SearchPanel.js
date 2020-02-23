@@ -1,5 +1,10 @@
 /**
- * Класс панели поиска
+ * @class SearchPanel
+ *  @param {HTMLElement} root - нода для рендеринга
+ *  @param parentParams {Object} - параметры прокидываемые от родителя
+ *  @param parentParams.state {Object} - данные которые хранятся в родителе
+ *  @param parentParams.methods {Array} - методы для работы с
+ *  @classdesc Класс панели поиска
  */
 class SearchPanel {
     constructor(root, {methods, state}) {
@@ -10,7 +15,8 @@ class SearchPanel {
 
     /**
      * Функция установки поиска
-     * @param value - значение поиска
+     * @param {String} value - значение поиска
+     * @return {Void}
      */
     setSearch = (value) => {
         this.methods.setFilters("", value);
@@ -19,7 +25,7 @@ class SearchPanel {
 
     /**
      *  Обработчик клика по кнопке поиска
-     * @param searchInput - требуемый Node елемент
+     * @param {HTMLElement} searchInput - требуемый Node елемент
      * @returns {Function} - возвращается функция вызова изменения фильтров
      */
     onButtonClick = (searchInput) => {
@@ -28,7 +34,8 @@ class SearchPanel {
 
     /**
      *  Обработчик нажатия Enter
-     * @param e - event объект
+     * @param {Object} e - event объект
+     * @return {Void}
      */
     onEnterClickHandler = (e) => {
         if (e.keyCode === 13)
@@ -37,6 +44,7 @@ class SearchPanel {
 
     /**
      *  рендер шаблона поиска
+     * @return {Void}
      */
     render = () => {
         const {root} = this;
@@ -62,6 +70,7 @@ class SearchPanel {
 
     /**
      * Иницилизация модуля
+     * @async
      * @returns {Promise<void>}
      */
     init = async () => {

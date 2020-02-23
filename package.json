@@ -1,37 +1,41 @@
 {
-  "name": "mypanghan",
+  "name": "myPanghan",
   "version": "1.0.0",
-  "description": "",
-  "main": "old/index.js",
+  "description": "module for website on tilda.cc",
+  "main": "src/Core/index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack   --mode=production --config ./src/webpack.config.js",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./src/webpack.config.js"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./src/webpack.config.js",
+    "docs": "jsdoc -c ./.jsdpc.conf.json"
   },
-  "author": "",
+  "author": "Alexandr Kudryashov",
+  "email": "modecrywork@gmail.com",
   "license": "ISC",
-  "devdependencies": {
-    "express": "^4.17.1",
-    "nodemon": "^2.0.2"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/modecry/myPanghan"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
-    "@babel/runtime": "^7.8.4",
-    "babel-loader": "^8.0.6",
-    "clean-webpack-plugin": "^3.0.0",
-    "cross-env": "^7.0.0",
-    "eslint": "^6.8.0",
-    "file-loader": "^5.0.2",
-    "html-webpack-plugin": "^3.2.0",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1"
-  },
-  "dependencies": {
-    "babel-runtime": "^6.26.0"
+    "@babel/core": "7.8.3",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "7.8.3",
+    "@babel/plugin-transform-runtime": "7.8.3",
+    "@babel/preset-env": "7.8.3",
+    "@babel/runtime": "7.8.4",
+    "babel-loader": "8.0.6",
+    "babel-runtime": "6.26.0",
+    "clean-webpack-plugin": "3.0.0",
+    "cross-env": "7.0.0",
+    "docdash": "^1.2.0",
+    "eslint": "6.8.0",
+    "express": "4.17.1",
+    "file-loader": "5.0.2",
+    "html-webpack-plugin": "3.2.0",
+    "jsdoc": "3.6.3",
+    "nodemon": "2.0.2",
+    "uglifyjs-webpack-plugin": "2.2.0",
+    "webpack": "4.41.5",
+    "webpack-cli": "3.3.10",
+    "webpack-dev-server": "3.10.1"
   }
 }

@@ -4,7 +4,23 @@
   Вверху стили тильды
 */
 
-/*categories*/
+/* advertisement */
+.t774__textwrapper::after {
+  content: "реклама";
+  font-size: 10px;
+  color: #607d8b;
+  opacity: 0.7;
+  right: 8px;
+  bottom: 5px;
+  position: absolute;
+}
+
+/* loader */
+.loader {
+  text-align: center;
+}
+
+/* categories */
 .catbtn {
   display: block;
   padding: 5px 10px 5px 10px;
@@ -29,9 +45,28 @@
 }
 
 /*content-blocks styles*/
-.blocks {
-  width: 97%;
+
+.t513__title {
+  margin-bottom: 20px;
 }
+.content-block-inner{
+  display: flex;
+}
+.content-block-image {
+  width: 100%;
+  max-width: 60px;
+  margin-right: 20px;
+}
+.content-block-image img {
+  max-width: 100%;
+}
+
+.content-block-contacts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  padding-bottom: 5px;
+}
+
 .content-block {
   border-bottom: 1px solid #327D9A;
   padding: 30px 0;
@@ -39,17 +74,17 @@
   font-family: 'Circe',Arial,sans-serif;
 }
 
-.content-block-contacts {
-  padding: 5px 0;
+.content-block-data {
+  display: inline;
+  float: left;
+  width: 100%;
+  max-width: 760px;
 }
-.content-block-contacts strong {
-  padding-right: 5px;
-}
-
 .content-block-contacts a {
   color: #607d8b !important;
   font-weight: 700;
-  margin-left: 5px;
+  margin-right: 8px;
+  margin-bottom: 5px;
   border-bottom: 1px solid #f6c448;
   box-shadow: inset 0px -1px 0px 0px #f6c448;
   text-decoration: none;
@@ -57,11 +92,18 @@
 .content-block-contacts a:hover {
   background-color: #f6c448;
 }
-.content-block-description{
-  padding-top: 10px;
+
+.content-block-description {
+  padding-top: 5px;
+  white-space: pre-line;
+}
+span.person-name {
+  margin-right: 5px;
+  font-weight: 700;
 }
 
-/*Search panel*/
+/* search panel */
+
 .searchPanel input{
   display: block;
   height: 30px;
@@ -79,12 +121,14 @@
   height: 30px;
   border-radius: 5px 0 0 5px;
   outline: none;
-  font-size: 14px;
-  color: #9DBFAF;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 500;
+  color: #37474f80;
 }
 
 .searchTerm:focus{
-  color: #607d8b;
+  color: #37474f;
 }
 
 .searchButton {
@@ -111,4 +155,14 @@
 
 .hidden {
   display: none;
+}
+
+/* hide image on mobile */
+@media screen and (max-width: 1200px) {
+  .content-block-image {
+    display: none !important;
+  }
+  .content-block-contacts,.content-block-description {
+    padding-left: 20px;
+  }
 }

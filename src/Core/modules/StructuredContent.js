@@ -7,7 +7,10 @@ import Categories from "./Categories/Categories";
 import SearchPanel from "./SearchPanel/SearchPanel";
 
 /**
- *  Основной класс релизующий общую логику и управляющий  отдельными частями модуля
+ *  @class StructuredContent
+ *  @param {Object} contentConfig - основной объект для конифигурации рбаоты
+ *  @param {Object} rootSettings - настройке для node элементов куда будет рендерится контент
+ *  @classdesc Основной класс релизующий общую логику и управляющий  отдельными частями модуля
  */
 class StructuredContent {
     constructor(contentConfig, rootSettings) {
@@ -26,7 +29,8 @@ class StructuredContent {
 
     /**
      * Получаем ноды для рендеринга
-     * @param roots - объект с классами
+     * @param {Object} roots - объект с классами
+     * @return {Void}
      */
     getRootNodes = (roots) => {
         for (let key in roots) {
@@ -37,18 +41,34 @@ class StructuredContent {
 
     /**
      * Запрос на получение данных
+     * @async
      * @returns {Promise<void>}
      */
     setIntitalData = async () => {
-        const {url, scheme} = this.contentConfig;
-        const {feed} = await getData(url); // запрашиваем данные
-        this.contentState.data = constructData(feed.entry, scheme); // форматируем данные на основе схемы
-        this.contentState.categories = categoryCollector(this.contentState.data); // собираем категории
+        const {contentFetch, categoriesUrl, scheme} = this.contentConfig;
+        const {url:servicesUrl,callbackFetch} = contentFetch;
+
+        const {feed: servicesData} = await getData(servicesUrl,callbackFetch); // запрашиваем данные сервисов
+        const {feed: categoriesData} = await getData(categoriesUrl);
+
+        this.contentState.categories = constructData(categoriesData.entry, { // категории
+            name: "gsx$cat",
+            image: "gsx$img"
+        }).sort(({name: a}, {name: b}) => { // сортировка категорий по алфавиту
+            a = a.toLowerCase();
+            b = b.toLowerCase();
+            if (a < b) return -1;
+            if (a > b) return 1;
+            return 0;
+        });
+
+        this.contentState.data = constructData(servicesData.entry, scheme); // форматируем данные на основе схемы
         this.setQueryFilters(); // устанавливаем исходные фильтры
     }
 
     /**
      *  Установка  фильтров из url  и localStorage
+     *  @return {Void}
      */
     setQueryFilters = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -66,8 +86,8 @@ class StructuredContent {
 
     /**
      * Метод установки фильтров и поиска
-     * @param category - требуемая категория
-     * @param search - строка с поиском
+     * @param {String} category - требуемая категория
+     * @param {String} search - строка с поиском
      */
     setFilters = (category = "", search = "") => {
         const {blockContentInstance} = this;
@@ -86,6 +106,7 @@ class StructuredContent {
 
     /**
      *  Метод рендеринга вызывает иницилизвцию вложенных инстансов
+     *  @return {void}
      */
     render = () => {
         const {categoriesInstance, blockContentInstance, contentConfig: {filtersSettings}} = this;
@@ -99,6 +120,7 @@ class StructuredContent {
 
     /**
      *  Иницилизация модуля
+     * @async
      * @returns {Promise<void>}
      */
     init = async () => {
