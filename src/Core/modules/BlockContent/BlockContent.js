@@ -1,3 +1,5 @@
+import ContentPart from "../ContentPart/";
+
 // utils
 import {filterData} from "utils";
 
@@ -12,13 +14,10 @@ import {renderTemplate} from "services";
  *  @param parentParams.contentFields {Array} - поля покторым нужно делать фильтр
  *  @classdesc Класс реализущий вывод основных блоков с контентом на основе данных
  */
-class BlockContent {
-    constructor(root, {state, contentFields}) {
-        this.filtredState = state.data;
-        this.root = root; // корневой элемент для рендера
-        this.parentState = state; // родительский стейт
-        this.childrenNodes = [];
-        this.contentFields = contentFields; // нейминги полей для фильтрации
+class BlockContent extends ContentPart {
+    constructor(root,params){
+        super(root,params);
+        this.filtredState = [];
     }
 
     /**
@@ -26,19 +25,19 @@ class BlockContent {
      *  @return {Void}
      */
     applyFilters = () => {
-        const {categories} = this.parentState; // лист категорий
-        const {category, search} = this.parentState.filters; // значения фильтров
-        this.filtredState = this.parentState.data.map(({id}) => id); // мапим массив id's всеъ элементов
+        const {categories,filters:{category,search},data} = this.params.state; // лист категорий
+        const {contentFields} = this.params;
+        this.filtredState = data.map(({id}) => id); // мапим массив id's всеъ элементов
 
         if (category) {
             const cat = categories.find(({name}) => name === category); // находим значение категории
             if (cat) {
-                this.filtredState = filterData(cat.name, this.parentState.data, ["cat"]).map(({id}) => id); // фильтруем массив id's
+                this.filtredState = filterData(cat.name, data, ["cat"]).map(({id}) => id); // фильтруем массив id's
             }
         }
 
         if (search) {
-            this.filtredState = filterData(search, this.parentState.data, this.contentFields).map(({id}) => id);
+            this.filtredState = filterData(search, data, contentFields).map(({id}) => id);
         }
 
         this.toggleVisible(); // переключение видимости блоков
@@ -59,7 +58,6 @@ class BlockContent {
         }
     }
 
-
     /**
      *  Метод рендера одного экземпляра блока с контентом
      * @param {String} name - имя
@@ -74,13 +72,17 @@ class BlockContent {
      * @param {String} cat - website
      * @returns {String} - строка с DOM элементом
      */
+
     renderBlock = ({name, whatsapp, telegram, instagram, facebook, service, description, id, cat, site}) => {
-        console.log(instagram);
+
+        const {categories} = this.params.state;
+
         // заголовок
         const title = renderTemplate(service, `<div class="t513__title t-heading t-heading_xs">${service}</div>`);
         // картинка с категорией
-        const defaultCategory = this.parentState.categories.find(({name})=>name==="default")?.image;
-        const targetCategory =  this.parentState.categories.find(({name})=>name===cat)?.image;
+        const defaultCategory = categories.find(({name})=>name==="default")?.image;
+        const targetCategory =  categories.find(({name})=>name===cat)?.image;
+
         const targetCategoryImageUrl = targetCategory || defaultCategory; // урл для отображения картинки
 
         const categoryImage = renderTemplate(targetCategoryImageUrl,`<div class="content-block-image"><img src="${targetCategoryImageUrl}"></div>`)
@@ -110,32 +112,26 @@ class BlockContent {
         return `<div class="content-block" data-id="${id}">${title}<div class="content-block-inner">${categoryImage}<div>${contacts}${desc}</div></div></div>`;
     }
 
-    /**
-     *  Рендер блоков на основе данных
-     *  @return {Void}
-     */
-    renderBlocksContent = () => {
-        const {root, parentState: {data}, renderBlock} = this;
-        const services = data.map(renderBlock); // мапим блоки по шаблонному методу
+    didRender = ()=>{
+        this.applyFilters();
+    }
+
+    render = ()=>{
+        const {root,params} = this;
+        const {data} = params.state;
+        const services = data.map(this.renderBlock); // мапим блоки по шаблонному методу
 
         // render блока
         const blocksContainer = document.createElement("div");
         blocksContainer.classList = "t-col t-col_10 t-prefix_1 t-text";
         blocksContainer.innerHTML = services.join("");
-        root.appendChild(blocksContainer);
 
-        this.childrenNodes = blocksContainer.children; // сохраняем коллекцию дочерних элементов
+        this.childrenNodes = blocksContainer.children;
 
+        return blocksContainer;
     }
 
-    /**
-     *  Иницилизация блока
-     *  @return {Promise<void>}
-     */
-    init = async () => {
-        this.renderBlocksContent();
-        await this.applyFilters();
-    }
 }
+
 
 export default BlockContent;

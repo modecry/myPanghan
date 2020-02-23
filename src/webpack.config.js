@@ -42,7 +42,8 @@ const baseConfig = {
                     plugins: [
                         '@babel/plugin-proposal-class-properties',
                         "@babel/plugin-proposal-optional-chaining",
-                        "@babel/plugin-transform-runtime"
+                        "@babel/plugin-transform-runtime",
+                        ["@babel/plugin-proposal-decorators",{ decoratorsBeforeExport: false }]
                     ]
                 },
                 exclude: /node_modules/

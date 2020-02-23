@@ -113,6 +113,7 @@ class StructuredContent {
         /// иницилизация инстансов
         categoriesInstance.init();
         blockContentInstance.init();
+
         if (filtersSettings.search) {
             this.searchPanel.init();
         }
@@ -142,7 +143,6 @@ class StructuredContent {
         /*Объявление инстансов*/
         this.categoriesInstance = new Categories(categories, parentParametrs);
         this.blockContentInstance = new BlockContent(blockContent, parentParametrs);
-
         // проверка на существование панели поиска
         if (filtersSettings.search) {
             parentParametrs.methods = {
