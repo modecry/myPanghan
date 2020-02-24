@@ -96,6 +96,7 @@
 .content-block-description {
   padding-top: 5px;
   white-space: pre-line;
+  word-break: break-word;
 }
 span.person-name {
   margin-right: 5px;
