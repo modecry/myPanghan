@@ -1,26 +1,18 @@
+import ContentPart from "../ContentPart";
 /**
- * @class SearchPanel
- *  @param {HTMLElement} root - нода для рендеринга
- *  @param parentParams {Object} - параметры прокидываемые от родителя
- *  @param parentParams.state {Object} - данные которые хранятся в родителе
- *  @param parentParams.methods {Array} - методы для работы с
+ *  @class SearchPanel
  *  @classdesc Класс панели поиска
  */
-class SearchPanel {
-    constructor(root, {methods, state}) {
-        this.methods = methods; // родительские методы
-        this.root = root; // корневой DOM элемент
-        this.parentState = state; // родительский стейт
-    }
-
+class SearchPanel extends ContentPart {
     /**
      * Функция установки поиска
      * @param {String} value - значение поиска
      * @return {Void}
      */
     setSearch = (value) => {
-        this.methods.setFilters("", value);
-        this.methods.clearCategories(); // сброс категорий
+        const {setFilters, clearCategories} = this.params.methods;
+        setFilters("", value);
+        clearCategories(); // сброс категорий
     }
 
     /**
@@ -42,11 +34,16 @@ class SearchPanel {
             this.setSearch(e.target.value);
     }
 
-    /**
-     *  рендер шаблона поиска
-     * @return {Void}
-     */
-    render = () => {
+    didRender = ()=>{
+        const searchButton = document.querySelector(".searchButton");
+        const searchInput = document.querySelector(".searchTerm");
+
+        /*Обработчки ввода*/
+        searchButton.addEventListener("click", this.onButtonClick(searchInput)); // обработчик на клик
+        searchInput.addEventListener("keydown", this.onEnterClickHandler); // обработчик на нажатие ENTER
+    }
+
+    render = ()=>{
         const {root} = this;
         const searchInner = `
                 <input type="text" class="searchTerm" placeholder="Поиск...">
@@ -58,24 +55,10 @@ class SearchPanel {
         const SearchContainer = document.createElement("div");
         SearchContainer.classList = "search-panel t-col t-col_10 t-prefix_1 t-text";
         SearchContainer.innerHTML = searchInner;
-        root.appendChild(SearchContainer);
 
-        const searchButton = document.querySelector(".searchButton");
-        const searchInput = document.querySelector(".searchTerm");
-
-        /*Обработчки ввода*/
-        searchButton.addEventListener("click", this.onButtonClick(searchInput)); // обработчик на клик
-        searchInput.addEventListener("keydown", this.onEnterClickHandler); // обработчик на нажатие ENTER
+        return SearchContainer;
     }
 
-    /**
-     * Иницилизация модуля
-     * @async
-     * @returns {Promise<void>}
-     */
-    init = async () => {
-        await this.render();
-    }
 }
 
 export default SearchPanel;

@@ -1,5 +1,5 @@
 import {toggleActive} from "utils";
-import ContentPart from "../ContentPart/";
+import ContentPart from "../ContentPart";
 class Categories  extends ContentPart{
 
     constructor(root,params){

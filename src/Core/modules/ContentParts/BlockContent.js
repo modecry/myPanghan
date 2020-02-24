@@ -1,4 +1,4 @@
-import ContentPart from "../ContentPart/";
+import ContentPart from "../ContentPart";
 
 // utils
 import {filterData} from "utils";

@@ -2,9 +2,9 @@
 import {getData, constructData, categoryCollector} from "services";
 import changeQuries from "services/changeQuries"
 // submodules
-import BlockContent from "./BlockContent/BlockContent";
-import Categories from "./Categories/Categories";
-import SearchPanel from "./SearchPanel/SearchPanel";
+import BlockContent from "./ContentParts/BlockContent";
+import Categories from "./ContentParts/Categories";
+import SearchPanel from "./ContentParts/SearchPanel";
 
 /**
  *  @class StructuredContent
